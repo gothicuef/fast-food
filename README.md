@@ -26,6 +26,11 @@ The Union plugin requires the MSVC toolset for compatibility, so alternative too
 git clone --recursive URL_TO_YOUR_REPO
 ```
 
+(if you missed)
+```git
+git submodule update --init --recursive
+```
+
 # Configuration
 
 All of the plugin configuration is located in **REPO_ROOT/CMakeLists.txt**.  
