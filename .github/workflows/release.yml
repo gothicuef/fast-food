@@ -1,6 +1,7 @@
 name: "Plugin CI/CD"
 
 on:
+  push:
   release:
     types: [created]
 
