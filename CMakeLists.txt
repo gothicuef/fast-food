@@ -12,7 +12,7 @@ project(UnionPlugin
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_subdirectory(dependencies)
+
 
 file(GLOB_RECURSE SRC
     "src/*.cpp"
@@ -38,3 +38,4 @@ target_add_versioninfo(${CMAKE_PROJECT_NAME}
 	PRODUCT_NAME "${CMAKE_PROJECT_NAME}"
 )
 
+add_subdirectory(dependencies)
