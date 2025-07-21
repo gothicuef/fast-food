@@ -27,8 +27,8 @@ jobs:
  
       - name: Compile plugin
         run: |
-          cmake . --preset MP-Release
-          cmake --build --preset MP-Release
+          cmake . --preset G1-Release
+          cmake --build --preset G1-Release
 
       - name: Find plugin
         run: |
@@ -38,8 +38,18 @@ jobs:
           echo "plugin_dll=$plugin_dll" >> $env:GITHUB_ENV
           echo "Found plugin path: $plugin_dll"
 
+      - name: Determine release tag
+        run: |
+          if ($env:GITHUB_REF_TYPE -eq "tag") {
+            echo "release_tag=${env:GITHUB_REF_NAME}" >> $env:GITHUB_ENV
+          } else {
+            echo "release_tag=dev" >> $env:GITHUB_ENV
+          }
+        shell: pwsh
+
       - name: Upload plugin
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.release_tag }}
           body_path: changelog.md
           files: ${{ env.plugin_dll }}

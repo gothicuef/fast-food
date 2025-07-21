@@ -4,8 +4,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 include(target_add_versioninfo)
-
-project(UnionPlugin
+add_compile_definitions(__G1)
+project(FastFood
 	DESCRIPTION "Union plugin for Gothic Games"
 	VERSION 1.0.0.0
 )
