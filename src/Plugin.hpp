@@ -229,6 +229,7 @@ namespace GOTHIC_NAMESPACE
 				//DebugLog("Máš " + std::to_string(rawMeat->objectName) + " syrového masa.");
 
 				//int rawInstance = rawMeat->GetInstance();
+				DebugLog("Instance " + std::to_string(rrr));
 				if (rr) {
 					DebugLog("Instance " + std::to_string(rrr) + ", " + std::to_string(rr->amount) + " syrového masa.");
 				}
