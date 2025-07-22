@@ -191,9 +191,12 @@ namespace GOTHIC_NAMESPACE
 
 	void __fastcall Hook_oCMobInter_StartInteraction(Gothic_I_Classic::oCMobInter* self, void* vtable, Gothic_I_Classic::oCNpc* npc) {
 		auto mobName = self->GetInstanceName();   // název vobu
-		auto mob = self->GetShowDebug();   // název vobu
-		auto npcName = npc->name[0];              // jméno NPC
-		DebugLog("[MOB] " + std::string(npcName.ToChar()) + " začal interagovat s " + mobName.ToChar());
+		auto mob = self->name;   // název vobu
+		auto mob2 = self->GetObjectName();
+		auto npcName = npc->name[0];
+		auto npcType = npc->npcType; // jméno NPC
+		auto npcType2 = zSTRING(npc->npcType); // jméno NPC
+		DebugLog("[MOB] " + std::string(npcName.ToChar()) + " (NpcType: " + std::string(npcType2) + ") začal interagovat s " + mob.ToChar() + ", " + std::string(mob2));
 
 
 		// zavoláme původní funkci
