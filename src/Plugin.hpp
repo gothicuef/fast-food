@@ -9,6 +9,8 @@
 #include <ZenGin/Gothic_I_Classic/API/zString.h>  // konkrétně pro zSTRING
 #include <ZenGin/zGothicAPI.h>  // konkrétně pro zSTRING
 
+#include "ZenGin/Gothic_I_Classic/API/oGame.h"
+
 namespace Gothic_I_Classic
 {
 
@@ -171,7 +173,7 @@ namespace Gothic_I_Classic
 		return Hook_WinMain(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
 	}
 */
-/*
+
 	void __fastcall oCGame_Init(oCGame* self, void* vtable);
 	auto Hook_oCGame_Init = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x00636F50, 0x0065D480, 0x006646D0, 0x006C1060)), &oCGame_Init, Union::HookType::Hook_Detours);
 	void __fastcall oCGame_Init(oCGame* self, void* vtable)
@@ -179,7 +181,7 @@ namespace Gothic_I_Classic
 		Hook_oCGame_Init(self, vtable);
 		Game_Init();
 	}
-*/
+
 	/*void __fastcall CGameManager_Done(CGameManager* self, void* vtable);
 	auto Hook_CGameManager_Done = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x00424850, 0x00427310, 0x004251A0, 0x004254E0)), &CGameManager_Done, Union::HookType::Hook_Detours);
 	void __fastcall CGameManager_Done(CGameManager* self, void* vtable)
