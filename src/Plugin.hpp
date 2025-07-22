@@ -200,12 +200,14 @@ namespace GOTHIC_NAMESPACE
 				//auto rawMeatIndex = parser->GetIndex("ITMI_RAWMEAT");
 				//auto r = npc->GetFromInv(npc->instanz, rawMeatIndex);
 				auto rr = player->GetIDByInstance("ITMI_RAWMEAT");
+				auto rrr = player->GetIDByInstance("ITFO_MEAT");
 				//player->GetFromInv()
 				//new oCItem();
 				//DebugLog("Máš " + std::to_string(rawMeat->objectName) + " syrového masa.");
 
 				//int rawInstance = rawMeat->GetInstance();
-					DebugLog("Instance " + std::to_string(rr) + ", " + std::to_string(rr) + " syrového masa.");
+					DebugLog("Instance " + std::to_string(rawMeat->amount) + ", " + std::to_string(rr) + " syrového masa.");
+					DebugLog("Instance " + std::to_string(rrr) + ", " + std::to_string(rrr) + " pecene masa.");
 				if (rawMeat) {
 					int rawCount = rawMeat->GetValue();
 					DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
