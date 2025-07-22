@@ -12,10 +12,6 @@
 
 #include "ZenGin/Gothic_I_Classic/API/oGame.h"
 
-// Makra pro snadnější přístup k hookům mezi verzemi
-#define HOOKFUNC(NAME) Hook_##NAME
-#define HOOKFUNC_AS(CLASS, NAME) Hook_##CLASS##_##NAME##_AS
-
 namespace GOTHIC_NAMESPACE
 {/*
 	using namespace Union;
@@ -41,7 +37,6 @@ namespace GOTHIC_NAMESPACE
 
 	void Game_Init()
 	{
-		Gothic_I_Classic::Hook_oCNpc_InitByScript->Activate();
 	}
 
 	void Game_Exit()
@@ -173,6 +168,30 @@ namespace GOTHIC_NAMESPACE
 		}
 	}
 */
+
+	void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* self, void* vtable, int instance, int savegame );
+
+	auto Hook_CNpc_InitByScript = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x0068C840, 0x006BCFB0, 0x006D0C10, 0x0072EE70)), &oCNpc_InitByScript, Union::HookType::Hook_Detours);
+
+	/*
+	 * g1c 0x0068C840
+	 * g1a 0x006BCFB0
+	 * g2c 0x006D0C10
+	 * g2a 0x0072EE70
+	 */
+	void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* self, void* vtable, int instance, int savegame ) {
+		Hook_CNpc_InitByScript( self, vtable, instance, savegame );
+		self->name[0] = self->name[0] + " " + Gothic_I_Classic::zSTRING( instance );
+	}
+/*
+	void __fastcall oCGame_Init(oCGame* self, void* vtable);
+	auto Hook_oCGame_Init = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x00636F50, 0x0065D480, 0x006646D0, 0x006C1060)), &oCGame_Init, Union::HookType::Hook_Detours);
+	void __fastcall oCGame_Init(oCGame* self, void* vtable)
+	{
+		Hook_oCGame_Init(self, vtable);
+		Game_Init();
+	}*/
+
 	/*
 	int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd);
 	auto Hook_WinMain = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x004F3E10, 0x00506810, 0x005000F0, 0x00502D70)), &WinMain, Union::HookType::Hook_Detours);
@@ -182,14 +201,6 @@ namespace GOTHIC_NAMESPACE
 		return Hook_WinMain(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
 	}
 */
-
-	void __fastcall oCGame_Init(oCGame* self, void* vtable);
-	auto Hook_oCGame_Init = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x00636F50, 0x0065D480, 0x006646D0, 0x006C1060)), &oCGame_Init, Union::HookType::Hook_Detours);
-	void __fastcall oCGame_Init(oCGame* self, void* vtable)
-	{
-		Hook_oCGame_Init(self, vtable);
-		Game_Init();
-	}
 
 	/*void __fastcall CGameManager_Done(CGameManager* self, void* vtable);
 	auto Hook_CGameManager_Done = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x00424850, 0x00427310, 0x004251A0, 0x004254E0)), &CGameManager_Done, Union::HookType::Hook_Detours);
