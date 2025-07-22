@@ -1,10 +1,12 @@
 // This file is included separately for each engine version
+#pragma once
 
 #include "Union/HookProto.h"
 #include "ZenGin/Gothic_I_Classic/API/oNpc.h"
 #include <Union/Hook.h>     // základní hlavičky Union frameworku
 #include <ZenGin/Gothic_I_Classic/API/zTypes.h>   // typy jako zSTRING, zCView, atd.
 #include <ZenGin/Gothic_I_Classic/API/zView.h>    // konkrétně pro zCView
+#include <ZenGin/Gothic_I_Classic/API/zString.h>  // konkrétně pro zSTRING
 #include <ZenGin/zGothicAPI.h>  // konkrétně pro zSTRING
 
 namespace GOTHIC_NAMESPACE
@@ -16,7 +18,7 @@ namespace GOTHIC_NAMESPACE
 
 	inline void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void* p0, int instance, int savegame ) {
 		Hook_oCNpc_InitByScript( _this, p0, instance, savegame );
-		_this->name[0] = _this->name[0] + " " + zSTRING( instance );
+		_this->name[0] = _this->name[0] + " " + Gothic_I_Classic::zSTRING( instance );
 	}
 	// NOTE! Callbacks won't be called by default, you need to uncomment
 	// hooks that will call specific callback
