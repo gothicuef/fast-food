@@ -10,32 +10,25 @@
 #include <ZenGin/Gothic_I_Classic/API/oNpc.h>
 #include <ZenGin/zGothicAPI.h>  // konkrétně pro zSTRING
 
+#include <Union/Signature.h>
 #include "ZenGin/Gothic_I_Classic/API/oGame.h"
 
-namespace GOTHIC_NAMESPACE
+namespace Gothic_I_Classic
 {
-	#include <Union/Signature.h>
 	using namespace Union;
 
-	inline void* FindEngineAddress(Signature* baseSign) {
-	#if defined(__G1)
-			auto compSign = Signature::GetCompatibleSignature(baseSign, "Gothic_I_Classic_Names.txt");
-			return compSign ? compSign->GetAddress() : nullptr;
-	#elif defined(__G2A)
-			auto compSign = Signature::GetCompatibleSignature(baseSign, "Gothic_II_Addon_Names.txt");
-			return compSign ? compSign->GetAddress() : nullptr;
-	#else
-			return nullptr;
-	#endif
+	void* FindEngineAddress(Signature* baseSign) {
+		auto compSign = Signature::GetCompatibleSignature(baseSign, "Gothic_I_Classic_Names.txt");
+		return compSign ? compSign->GetAddress() : nullptr;
 	}
 
 	#define ENGINE_ADDRESS_OF(what) FindEngineAddress(SIGNATURE_OF(what))
 
-	inline auto hook = Union::CreateHook(ENGINE_ADDRESS_OF(&Gothic_I_Classic::oCNpc::InitByScript), &Gothic_I_Classic::oCNpc::InitByScript_Hooked);
+	inline auto hook = Union::CreateHook(ENGINE_ADDRESS_OF(&oCNpc::InitByScript), &oCNpc::InitByScript_Hooked);
 
-	void Gothic_I_Classic::oCNpc::InitByScript_Hooked(Gothic_I_Classic::oCNpc* _this, void* p0, int instance, int savegame ) {
+	void oCNpc::InitByScript_Hooked(oCNpc* _this, void* p0, int instance, int savegame ) {
 		hook( _this, p0, instance, savegame );
-		_this->name[0] = _this->name[0] + " " + Gothic_I_Classic::zSTRING( instance );
+		_this->name[0] = _this->name[0] + " " + zSTRING( instance );
 	}
 
 	// NOTE! Callbacks won't be called by default, you need to uncomment
