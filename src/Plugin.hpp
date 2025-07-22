@@ -7,6 +7,7 @@
 #include <ZenGin/Gothic_I_Classic/API/zTypes.h>   // typy jako zSTRING, zCView, atd.
 #include <ZenGin/Gothic_I_Classic/API/zView.h>    // konkrétně pro zCView
 #include <ZenGin/Gothic_I_Classic/API/zString.h>  // konkrétně pro zSTRING
+#include <ZenGin/Gothic_I_Classic/API/oNpc.h>
 #include <ZenGin/zGothicAPI.h>  // konkrétně pro zSTRING
 
 #include "ZenGin/Gothic_I_Classic/API/oGame.h"
@@ -14,8 +15,8 @@ using namespace Union;
 
 void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void*, int instance, int savegame );
 
-auto Hook_oCNpc_InitByScript = Union::CreateHook(Hook_oCNpc_InitByScript, &oCNpc_InitByScript,
-												 Union::HookType::Hook_CallPatch);
+inline auto Hook_oCNpc_InitByScript = Union::CreateHook(&Gothic_I_Classic::oCNpc::InitByScript, &oCNpc_InitByScript,
+                                                        HookType::Hook_CallPatch);
 
 inline void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void* p0, int instance, int savegame ) {
 	Hook_oCNpc_InitByScript( _this, p0, instance, savegame );
