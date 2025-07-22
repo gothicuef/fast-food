@@ -230,12 +230,8 @@ namespace GOTHIC_NAMESPACE
 				//int rawInstance = rawMeat->GetInstance();
 				DebugLog("Instance " + std::to_string(rrr) + ", " + std::to_string(rr) + " syrového masa.");
 
-				auto it = playerInventory.IsIn("ITMI_RAWMEAT", 0);
 				auto index = parser->GetIndex("ITMI_RAWMEAT");
-					DebugLog("Instance Index: " + std::to_string(index) );
-				if (it) {
-					DebugLog("Instance Index: " + std::to_string(index) + ", IT: " + std::to_string(it->GetInstance()) + " pecene masa.");
-				}
+
 				if (rawMeat) {
 					int rawCount = rawMeat->GetValue();
 					DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
