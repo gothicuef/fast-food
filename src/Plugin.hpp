@@ -196,10 +196,13 @@ namespace GOTHIC_NAMESPACE
 			auto mob2 = self->GetObjectName();
 			if (mob2 == zSTRING("OC_MOB_PAN")) {
 				oCItem *rawMeat = npc->inventory2.IsIn("ITMI_RAWMEAT", 0);
+				//auto parser = zCParser::GetInstance();
+				auto rawMeatIndex = parser->GetIndex("ITMI_RAWMEAT");
+				//new oCItem();
 				//DebugLog("Máš " + std::to_string(rawMeat->objectName) + " syrového masa.");
 
-				int rawInstance = rawMeat->GetInstance();
-					DebugLog("Instance " + std::to_string(rawInstance) + " syrového masa.");
+				//int rawInstance = rawMeat->GetInstance();
+					DebugLog("Instance " + std::to_string(rawMeatIndex) + " syrového masa.");
 				if (rawMeat) {
 					int rawCount = rawMeat->GetValue();
 					DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
