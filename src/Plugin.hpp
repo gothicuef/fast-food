@@ -11,6 +11,12 @@
 #include <ZenGin/zGothicAPI.h>  // konkrétně pro zSTRING
 
 #include "ZenGin/Gothic_I_Classic/API/oGame.h"
+#include <fstream>
+
+void DebugLog(const std::string& msg) {
+	std::ofstream log("FastFoodDebug.log", std::ios::app);
+	log << msg << "\n";
+}
 
 namespace GOTHIC_NAMESPACE
 {/*
@@ -169,6 +175,32 @@ namespace GOTHIC_NAMESPACE
 	}
 */
 
+	void __fastcall Hook_oCMobInter_StartInteraction(Gothic_I_Classic::oCMobInter* self, void* vtable, Gothic_I_Classic::oCNpc* npc);
+
+	// vytvoření hooku (adresu doplníme podle engine)
+	auto Hook_oCMobInter_StartInteraction_Original = Union::CreateHook(
+		reinterpret_cast<void*>(zSwitch(
+			0x0067FCA0,  // G1
+			0x006AEDE0,  // G1A
+			0x006C34F0,  // G2
+			0x00721580   // G2A
+		)),
+		&Hook_oCMobInter_StartInteraction,
+		Union::HookType::Hook_Detours
+	);
+
+	void __fastcall Hook_oCMobInter_StartInteraction(Gothic_I_Classic::oCMobInter* self, void* vtable, Gothic_I_Classic::oCNpc* npc) {
+		auto mobName = self->GetInstanceName();   // název vobu
+		auto mob = self->GetShowDebug();   // název vobu
+		auto npcName = npc->name[0];              // jméno NPC
+		DebugLog("[MOB] " + std::string(npcName.ToChar()) + " začal interagovat s " + mobName.ToChar());
+
+
+		// zavoláme původní funkci
+		Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+	}
+
+	// Names
 	void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* self, void* vtable, int instance, int savegame );
 
 	auto Hook_CNpc_InitByScript = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x0068C840, 0x006BCFB0, 0x006D0C10, 0x0072EE70)), &oCNpc_InitByScript, Union::HookType::Hook_Detours);
