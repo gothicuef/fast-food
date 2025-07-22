@@ -204,6 +204,7 @@ namespace GOTHIC_NAMESPACE
 				auto rrr = parser->GetInstance(player->instanz, 3849);
 				auto inv = &npc->inventory2; // oCNpcInventory
 				DebugLog("=== INVENTAR ===");
+
 				//Syrov� maso | ID: 3851 | Count: 103
 				//Ope�en� maso | ID: 3849 | Count: 37
 
