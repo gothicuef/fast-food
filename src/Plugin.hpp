@@ -210,9 +210,6 @@ namespace GOTHIC_NAMESPACE
 				DebugLog("Instance " + std::to_string(rrr) + ", " + std::to_string(rr) + " syrového masa.");
 				if (rrrItem) {
 					DebugLog("Instance " + std::to_string(rrr) + ", " + std::to_string(rrrItem->GetCount(0)) + " pecene masa.");
-				} else {
-
-					DebugLog("Instance " + std::to_string(rrr) + ", " + std::to_string(rrrItem) + " pecene masa.");
 				}
 				if (rawMeat) {
 					int rawCount = rawMeat->GetValue();
