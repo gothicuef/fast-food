@@ -200,11 +200,12 @@ namespace GOTHIC_NAMESPACE
 				//auto parser = zCParser::GetInstance();
 				//auto rawMeatIndex = parser->GetIndex("ITMI_RAWMEAT");
 				//auto r = npc->GetFromInv(npc->instanz, rawMeatIndex);
-				auto rr = player->GetIDByInstance("ITMI_RAWMEAT");
-				auto rrr = parser->GetIndex("ITFO_MEAT");
-
+				auto rr = player->IsInInv("ITMI_RAWMEAT", 0);
+				auto rrr = parser->GetInstance(3849, 0);
 				auto inv = &npc->inventory2; // oCNpcInventory
 				DebugLog("=== INVENTAR ===");
+				//Syrov� maso | ID: 3851 | Count: 103
+				//Ope�en� maso | ID: 3849 | Count: 37
 
 				// Projdeme všechny kategorie (zbraně, zbroje, jídlo, atd.)
 				for (int cat = 0; cat < INV_MAX; cat++) {
@@ -228,8 +229,9 @@ namespace GOTHIC_NAMESPACE
 				//DebugLog("Máš " + std::to_string(rawMeat->objectName) + " syrového masa.");
 
 				//int rawInstance = rawMeat->GetInstance();
-				DebugLog("Instance " + std::to_string(rrr) + ", " + std::to_string(rr) + " syrového masa.");
-
+				if (rr) {
+					DebugLog("Instance " + std::to_string(rrr) + ", " + std::to_string(rr->amount) + " syrového masa.");
+				}
 				auto index = parser->GetIndex("ITMI_RAWMEAT");
 
 				if (rawMeat) {
