@@ -195,13 +195,13 @@ namespace GOTHIC_NAMESPACE
 		if (npc->npcType == NPCTYPE_MAIN) {
 			auto mob2 = self->GetObjectName();
 			if (mob2 == zSTRING("OC_MOB_PAN")) {
-				oCItem *rawMeat = npc->inventory2.IsIn("ITMI_RAWMEAT", 0);
+				oCItem *rawMeat = npc->inventory2.IsIn(3851, 0);
 				player->PutInInv("ITFO_MEAT", 100);
 				//auto parser = zCParser::GetInstance();
 				//auto rawMeatIndex = parser->GetIndex("ITMI_RAWMEAT");
 				//auto r = npc->GetFromInv(npc->instanz, rawMeatIndex);
 				auto rr = player->IsInInv("ITMI_RAWMEAT", 0);
-				auto rrr = parser->GetInstance(0, 3849);
+				auto rrr = parser->GetInstance(player->instanz, 3849);
 				auto inv = &npc->inventory2; // oCNpcInventory
 				DebugLog("=== INVENTAR ===");
 				//Syrov� maso | ID: 3851 | Count: 103
