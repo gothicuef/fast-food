@@ -12,19 +12,23 @@
 
 #include "ZenGin/Gothic_I_Classic/API/oGame.h"
 
-namespace Gothic_I_Classic
+// Makra pro snadnější přístup k hookům mezi verzemi
+#define HOOKFUNC(NAME) Hook_##NAME
+#define HOOKFUNC_AS(CLASS, NAME) Hook_##CLASS##_##NAME##_AS
+/*
+namespace GOTHIC_NAMESPACE
 {
 	using namespace Union;
 
 	//void InitByScript( int, int )   zCall( 0x0068C840 );
 
-	void oCNpc_InitByScript(oCNpc* _this, void*, int instance, int savegame );
+	void oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void*, int instance, int savegame );
 
 	inline auto hook = CreateHook((void*)0x0068C840, &oCNpc_InitByScript);
 
-	void oCNpc_InitByScript(oCNpc* _this, void* p0, int instance, int savegame ) {
+	inline void oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void* p0, int instance, int savegame ) {
 		hook( _this, p0, instance, savegame );
-		_this->name[0] = _this->name[0] + " " + zSTRING( instance );
+		_this->name[0] = _this->name[0] + " " + Gothic_I_Classic::zSTRING( instance );
 	}
 
 	// NOTE! Callbacks won't be called by default, you need to uncomment
@@ -142,7 +146,8 @@ namespace Gothic_I_Classic
 	void Game_ApplySettings()
 	{
 
-	}/*
+	}*/
+/*
 	void __fastcall Hook_UseMob(oCNpc* npc, void* vtable, oCMobInter* mob)
 	{
 		if (mob && mob->GetScemeName().HasWordI("PAN")) {
@@ -305,4 +310,4 @@ namespace Gothic_I_Classic
 		Hook_CGameManager_ApplySomeSettings(self, vtable);
 		Game_ApplySettings();
 	}*/
-}
+//}
