@@ -2,6 +2,14 @@
 
 namespace GOTHIC_NAMESPACE 
 {
+	void __fastcall oCNpc_InitByScript( oCNpc* _this, void*, int instance, int savegame );
+
+	auto Hook_oCNpc_InitByScript = CreateHookByName( &oCNpc::InitByScript, &oCNpc_InitByScript, Hook_CallPatch );
+
+	void __fastcall oCNpc_InitByScript( oCNpc* _this, void* p0, int instance, int savegame ) {
+		Hook_oCNpc_InitByScript( _this, p0, instance, savegame );
+		_this->name[0] = _this->name[0] + " " + zSTRING( instance );
+	}
 	// NOTE! Callbacks won't be called by default, you need to uncomment
 	// hooks that will call specific callback
 
@@ -12,8 +20,9 @@ namespace GOTHIC_NAMESPACE
 
 	void Game_Init()
 	{
-		zSTRING msg = "✅ Hello World from Union Plugin!";
-		zCView::MessageBox(nullptr, &msg, 0);
+		//zSTRING msg = "✅ Hello World from Union Plugin!";
+		//Gothic_I_Addon::zCView::DialogMessage(nullptr, &msg, 0);
+		Message::Info("Hello");
 	}
 
 	void Game_Exit()
@@ -21,12 +30,12 @@ namespace GOTHIC_NAMESPACE
 
 	}
 
-	void Game_PreLoop()
+	inline void Game_PreLoop()
 	{
 
 	}
 
-	void Game_Loop()
+	inline void Game_Loop()
 	{
 
 	}
@@ -119,8 +128,33 @@ namespace GOTHIC_NAMESPACE
 	void Game_ApplySettings()
 	{
 
+	}/*
+	void __fastcall Hook_UseMob(oCNpc* npc, void* vtable, oCMobInter* mob)
+	{
+		if (mob && mob->GetScemeName().HasWordI("PAN")) {
+			CookAllMeatNow(npc);
+			return;
+		}
+
+		Orig_UseMob(npc, vtable, mob);
 	}
 
+	void CookAllMeatNow(oCNpc* npc)
+	{
+		int rawCount = npc->inventory2.IsInInv("ITMI_RAWMEAT", 0);
+		if (rawCount > 0) {
+			npc->RemoveFromInventory("ITMI_RAWMEAT", rawCount);
+			npc->CreateInvItems("ITMI_COOKMEAT", rawCount);
+
+			zSTRING msg = "✅ Uvareno vse maso: " + zSTRING(rawCount) + " ks!";
+			Gothic_I_Addon::zCView::MessageBox(nullptr, &msg, 0);
+		} else {
+			zSTRING msg = "❌ Nemas zadne syrove maso.";
+			Gothic_I_Addon::zCView::MessageBox(nullptr, &msg, 0);
+		}
+	}
+*/
+	/*
 	int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd);
 	auto Hook_WinMain = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x004F3E10, 0x00506810, 0x005000F0, 0x00502D70)), &WinMain, Union::HookType::Hook_Detours);
 	int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
@@ -128,7 +162,8 @@ namespace GOTHIC_NAMESPACE
 		Game_EntryPoint();
 		return Hook_WinMain(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
 	}
-
+*/
+/*
 	void __fastcall oCGame_Init(oCGame* self, void* vtable);
 	auto Hook_oCGame_Init = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x00636F50, 0x0065D480, 0x006646D0, 0x006C1060)), &oCGame_Init, Union::HookType::Hook_Detours);
 	void __fastcall oCGame_Init(oCGame* self, void* vtable)
@@ -136,7 +171,7 @@ namespace GOTHIC_NAMESPACE
 		Hook_oCGame_Init(self, vtable);
 		Game_Init();
 	}
-
+*/
 	/*void __fastcall CGameManager_Done(CGameManager* self, void* vtable);
 	auto Hook_CGameManager_Done = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x00424850, 0x00427310, 0x004251A0, 0x004254E0)), &CGameManager_Done, Union::HookType::Hook_Detours);
 	void __fastcall CGameManager_Done(CGameManager* self, void* vtable)
