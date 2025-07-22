@@ -17,7 +17,7 @@ file(GLOB_RECURSE SRC
     "src/*.cpp"
 )
 
-
+add_library(${CMAKE_PROJECT_NAME} SHARED)
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${SRC})
 
 target_include_directories(${CMAKE_PROJECT_NAME}
