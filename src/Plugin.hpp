@@ -10,7 +10,6 @@
 #include <ZenGin/Gothic_I_Classic/API/oNpc.h>
 #include <ZenGin/zGothicAPI.h>  // konkrétně pro zSTRING
 
-#include <Union/Signature.h>
 #include "ZenGin/Gothic_I_Classic/API/oGame.h"
 
 namespace Gothic_I_Classic
@@ -21,7 +20,7 @@ namespace Gothic_I_Classic
 
 	void oCNpc_InitByScript(oCNpc* _this, void*, int instance, int savegame );
 
-	inline auto hook = Union::CreateHook(0x0068C840, &oCNpc_InitByScript);
+	inline auto hook = CreateHook((void*)0x0068C840, &oCNpc_InitByScript);
 
 	void oCNpc_InitByScript(oCNpc* _this, void* p0, int instance, int savegame ) {
 		hook( _this, p0, instance, savegame );
