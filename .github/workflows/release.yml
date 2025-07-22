@@ -27,8 +27,8 @@ jobs:
  
       - name: Compile plugin
         run: |
-          cmake . --preset MP-Release
-          cmake --build --preset MP-Release
+          cmake . --preset G1-Release
+          cmake --build --preset G1-Release
 
       - name: Find plugin
         run: |
