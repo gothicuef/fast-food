@@ -203,7 +203,7 @@ namespace GOTHIC_NAMESPACE
 				auto rr = player->GetIDByInstance("ITMI_RAWMEAT");
 				auto rrr = parser->GetIndex("ITFO_MEAT");
 
-				auto rrrItem = player->GetItem(rrr, 0);
+				auto playerInventory = player->inventory2;
 
 				//player->GetFromInv()
 				//new oCItem();
@@ -211,8 +211,12 @@ namespace GOTHIC_NAMESPACE
 
 				//int rawInstance = rawMeat->GetInstance();
 				DebugLog("Instance " + std::to_string(rrr) + ", " + std::to_string(rr) + " syrového masa.");
-				if (rrrItem) {
-					DebugLog("Instance " + std::to_string(rrr) + ", " + std::to_string(rrrItem->GetCount(0)) + " pecene masa.");
+
+				auto it = playerInventory.IsIn("ITMI_RAWMEAT", 0);
+				auto index = parser->GetIndex("ITMI_RAWMEAT");
+					DebugLog("Instance Index" + std::to_string(index) );
+				if (it) {
+					DebugLog("Instance Index: " + std::to_string(index) + ", IT: " + std::to_string(it->GetInstance()) + " pecene masa.");
 				}
 				if (rawMeat) {
 					int rawCount = rawMeat->GetValue();
