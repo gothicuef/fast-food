@@ -194,18 +194,18 @@ namespace GOTHIC_NAMESPACE
 		// [MOB] J� 36224 (NpcType: 1) začal interagovat s PAN, OC_MOB_PAN
 		if (npc->npcType == NPCTYPE_MAIN) {
 			auto mob2 = self->GetObjectName();
-			if (mob2.ToChar() == "OC_MOB_PAN") {
+			if (mob2 == zSTRING("OC_MOB_PAN")) {
 				oCItem *rawMeat = npc->inventory2.IsIn("ITMI_RAWMEAT", 0);
+				//DebugLog("Máš " + std::to_string(rawMeat->objectName) + " syrového masa.");
 
 				if (rawMeat) {
 					int rawCount = rawMeat->amount;
 					DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
 				}
 
-				auto npcType2 = zSTRING(npc->npcType); // jméno NPC
-
-				DebugLog("[MOB] NpcType: " + std::string(npcType2) + " začal interagovat s " + std::string(mob2));
 			}
+			auto npcType2 = zSTRING(npc->npcType); // jméno NPC
+			DebugLog("[MOB] NpcType: " + std::string(npcType2) + " začal interagovat s " + std::string(mob2));
 		}
 
 		// zavoláme původní funkci
