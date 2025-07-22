@@ -203,7 +203,25 @@ namespace GOTHIC_NAMESPACE
 				auto rr = player->GetIDByInstance("ITMI_RAWMEAT");
 				auto rrr = parser->GetIndex("ITFO_MEAT");
 
-				auto playerInventory = player->inventory2;
+				auto inv = &npc->inventory2; // oCNpcInventory
+				DebugLog("=== INVENTAR ===");
+
+				// Projdeme všechny kategorie (zbraně, zbroje, jídlo, atd.)
+				for (int cat = 0; cat < INV_MAX; cat++) {
+
+					zCListSort<oCItem>* list = inv->inventory[cat].next;
+					while (list) {
+						oCItem* item = list->GetData();
+						if (item) {
+							DebugLog(
+								std::string(item->name.ToChar()) +
+								" | ID: " + std::to_string(item->instanz) +
+								" | Count: " + std::to_string(item->amount)
+							);
+						}
+						list = list->next;
+					}
+				}
 
 				//player->GetFromInv()
 				//new oCItem();
@@ -214,7 +232,7 @@ namespace GOTHIC_NAMESPACE
 
 				auto it = playerInventory.IsIn("ITMI_RAWMEAT", 0);
 				auto index = parser->GetIndex("ITMI_RAWMEAT");
-					DebugLog("Instance Index" + std::to_string(index) );
+					DebugLog("Instance Index: " + std::to_string(index) );
 				if (it) {
 					DebugLog("Instance Index: " + std::to_string(index) + ", IT: " + std::to_string(it->GetInstance()) + " pecene masa.");
 				}
