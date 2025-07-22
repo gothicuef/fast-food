@@ -13,13 +13,13 @@ void HOOKFUNC_AS(oCNpc, InitByScript)(Gothic_I_Classic::oCNpc* _this, Gothic_I_C
     if (!_this)
         return;
 
-    int worldNum = 0;
+    Gothic_I_Classic::zSTRING worldNum = "";
 
-    if (Gothic_I_Classic::ogame && Gothic_I_Classic::ogame->GetGameWorld() && Gothic_I_Classic::ogame->GetGameWorld()->worldInfo) {
-        worldNum = Gothic_I_Classic::ogame->GetGameWorld()->worldInfo->worldVersion;
+    if (Gothic_I_Classic::ogame && Gothic_I_Classic::ogame->GetGameWorld() && Gothic_I_Classic::ogame->GetGameWorld()->worldName) {
+        worldNum = Gothic_I_Classic::ogame->GetGameWorld()->worldName;
     }
 
     // Přidáme k jménu NPC číslo světa
-    _this->name += " [World " + Gothic_I_Classic::zSTRING(worldNum) + "]";
+    _this->name[0] += " [World " + Gothic_I_Classic::zSTRING(worldNum) + "]";
 }
 #endif
