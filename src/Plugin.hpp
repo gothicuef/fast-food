@@ -190,14 +190,23 @@ namespace GOTHIC_NAMESPACE
 	);
 
 	void __fastcall Hook_oCMobInter_StartInteraction(Gothic_I_Classic::oCMobInter* self, void* vtable, Gothic_I_Classic::oCNpc* npc) {
-		auto mobName = self->GetInstanceName();   // název vobu
-		auto mob = self->name;   // název vobu
-		auto mob2 = self->GetObjectName();
-		auto npcName = npc->name[0];
-		auto npcType = npc->npcType; // jméno NPC
-		auto npcType2 = zSTRING(npc->npcType); // jméno NPC
-		DebugLog("[MOB] " + std::string(npcName.ToChar()) + " (NpcType: " + std::string(npcType2) + ") začal interagovat s " + mob.ToChar() + ", " + std::string(mob2));
 
+		// [MOB] J� 36224 (NpcType: 1) začal interagovat s PAN, OC_MOB_PAN
+		if (npc->npcType == NPCTYPE_MAIN) {
+			auto mob2 = self->GetObjectName();
+			if (mob2.ToChar() == "OC_MOB_PAN") {
+				oCItem *rawMeat = npc->inventory2.IsIn("ITMI_RAWMEAT", 0);
+
+				if (rawMeat) {
+					int rawCount = rawMeat->amount;
+					DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
+				}
+
+				auto npcType2 = zSTRING(npc->npcType); // jméno NPC
+
+				DebugLog("[MOB] NpcType: " + std::string(npcType2) + " začal interagovat s " + std::string(mob2));
+			}
+		}
 
 		// zavoláme původní funkci
 		Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
