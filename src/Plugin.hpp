@@ -9,8 +9,6 @@
 #include <ZenGin/Gothic_I_Classic/API/zString.h>  // konkrétně pro zSTRING
 #include <ZenGin/zGothicAPI.h>  // konkrétně pro zSTRING
 
-#include "Plugin.hpp"
-
 namespace Gothic_I_Classic
 {
 	void __fastcall oCNpc_InitByScript(oCNpc* _this, void*, int instance, int savegame );
