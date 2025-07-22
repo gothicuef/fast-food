@@ -11,15 +11,14 @@
 
 namespace Gothic_I_Classic
 {
-	void __fastcall oCNpc_InitByScript(oCNpc* _this, void*, int instance, int savegame );
 
-	inline auto Hook_oCNpc_InitByScript = Union::CreateHook(Hook_oCNpc_InitByScript, &oCNpc_InitByScript,
-	                                                        Union::HookType::Hook_CallPatch);
+	void __fastcall oCNpc_InitByScript(oCNpc* _this, void*, int instance, int savegame );
 
 	inline void __fastcall oCNpc_InitByScript(oCNpc* _this, void* p0, int instance, int savegame ) {
 		Hook_oCNpc_InitByScript( _this, p0, instance, savegame );
 		_this->name[0] = _this->name[0] + " " + Gothic_I_Classic::zSTRING( instance );
 	}
+
 	// NOTE! Callbacks won't be called by default, you need to uncomment
 	// hooks that will call specific callback
 
@@ -30,6 +29,8 @@ namespace Gothic_I_Classic
 
 	void Game_Init()
 	{
+		auto Hook_oCNpc_InitByScript = Union::CreateHook(Hook_oCNpc_InitByScript, &oCNpc_InitByScript,
+		                                                 Union::HookType::Hook_CallPatch);
 	}
 
 	void Game_Exit()
