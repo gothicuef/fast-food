@@ -19,9 +19,11 @@ namespace Gothic_I_Classic
 
 	//void InitByScript( int, int )   zCall( 0x0068C840 );
 
-	inline auto hook = Union::CreateHook(0x0068C840, &oCNpc::InitByScript_Hooked);
+	void oCNpc_InitByScript(oCNpc* _this, void*, int instance, int savegame );
 
-	void oCNpc::InitByScript_Hooked(oCNpc* _this, void* p0, int instance, int savegame ) {
+	inline auto hook = Union::CreateHook(0x0068C840, &oCNpc_InitByScript);
+
+	void oCNpc_InitByScript(oCNpc* _this, void* p0, int instance, int savegame ) {
 		hook( _this, p0, instance, savegame );
 		_this->name[0] = _this->name[0] + " " + zSTRING( instance );
 	}
