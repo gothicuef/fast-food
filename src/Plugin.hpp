@@ -14,10 +14,10 @@
 #include "ZenGin/Gothic_I_Classic/API/oGame.h"
 
 namespace Gothic_I_Classic
-{/*
+{
 	using namespace Union;
 
-	void* FindEngineAddress(Signature* baseSign) {
+	inline void* FindEngineAddress(Signature* baseSign) {
 		auto compSign = Signature::GetCompatibleSignature(baseSign, "Gothic_I_Classic_Names.txt");
 		return compSign ? compSign->GetAddress() : nullptr;
 	}
@@ -29,7 +29,7 @@ namespace Gothic_I_Classic
 	void oCNpc::InitByScript_Hooked(oCNpc* _this, void* p0, int instance, int savegame ) {
 		hook( _this, p0, instance, savegame );
 		_this->name[0] = _this->name[0] + " " + zSTRING( instance );
-	}*/
+	}
 
 	// NOTE! Callbacks won't be called by default, you need to uncomment
 	// hooks that will call specific callback
