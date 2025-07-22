@@ -1,25 +1,33 @@
 #pragma once
 
-#ifdef __G1
-#include "Plugin.hpp"
-#include <ZenGin/Gothic_I_Classic/API/zString.h>
-#include <ZenGin/Gothic_I_Classic/API/oNpc.h>
+// Zde jsou správné includy z gitlab verzí API
+#include <ZenGin/oCNpc.h>
+#include <ZenGin/oGame.h>
+#include <ZenGin/oWorld.h>
+#include <ZenGin/zString.h>
+#include <Union/Hook.h>
 
-void HOOKFUNC_AS(oCNpc, InitByScript)(Gothic_I_Classic::oCNpc* _this, Gothic_I_Classic::zSTRING& name, Gothic_I_Classic::zSTRING& slot)
+// Hook pro InitByScript
+HOOKSPACE(Gothic_I_Classic, ENGINE)
 {
-    // Zavoláme původní funkci
-    THISCALL(Hook_oCNpc_InitByScript)(_this, name, slot);
+    // Originální funkce
+    static auto Hook_oCNpc_InitByScript = Union::CreateHook(
+        zSwitch(0x0062D1F0, 0x0064A590, 0x006508E0, 0x006AD240), // offsety pro G1/G1A/G2/G2A
+        &Hook_oCNpc_InitByScript_AS,
+        Union::HookType::Hook_Detours
+    );
 
-    if (!_this)
-        return;
+    // Hook implementace
+    void __fastcall Hook_oCNpc_InitByScript_AS(oCNpc* _this, void* vtable, zSTRING name, zSTRING slot)
+    {
+        // Zavoláme původní funkci
+        Hook_oCNpc_InitByScript(_this, vtable, name, slot);
 
-    Gothic_I_Classic::zSTRING worldNum = "";
+        // Získáme název aktuálního světa
+        oCWorld* world = ogame->GetGameWorld(); // přístup k world
+        zSTRING worldName = world ? world->GetWorldName() : "UNKNOWN";
 
-    if (Gothic_I_Classic::ogame && Gothic_I_Classic::ogame->GetGameWorld() && Gothic_I_Classic::ogame->GetGameWorld()->worldName) {
-        worldNum = Gothic_I_Classic::ogame->GetGameWorld()->worldName;
+        // Přidáme číslo/ID světa k jménu NPC
+        _this->name += " [" + worldName + "]";
     }
-
-    // Přidáme k jménu NPC číslo světa
-    _this->name[0] += " [World " + Gothic_I_Classic::zSTRING(worldNum) + "]";
 }
-#endif

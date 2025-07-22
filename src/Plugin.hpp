@@ -15,9 +15,9 @@
 // Makra pro snadnější přístup k hookům mezi verzemi
 #define HOOKFUNC(NAME) Hook_##NAME
 #define HOOKFUNC_AS(CLASS, NAME) Hook_##CLASS##_##NAME##_AS
-/*
+
 namespace GOTHIC_NAMESPACE
-{
+{/*
 	using namespace Union;
 
 	//void InitByScript( int, int )   zCall( 0x0068C840 );
@@ -29,7 +29,7 @@ namespace GOTHIC_NAMESPACE
 	inline void oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void* p0, int instance, int savegame ) {
 		hook( _this, p0, instance, savegame );
 		_this->name[0] = _this->name[0] + " " + Gothic_I_Classic::zSTRING( instance );
-	}
+	}*/
 
 	// NOTE! Callbacks won't be called by default, you need to uncomment
 	// hooks that will call specific callback
@@ -41,6 +41,7 @@ namespace GOTHIC_NAMESPACE
 
 	void Game_Init()
 	{
+		Gothic_I_Classic::Hook_oCNpc_InitByScript->Activate();
 	}
 
 	void Game_Exit()
@@ -146,8 +147,7 @@ namespace GOTHIC_NAMESPACE
 	void Game_ApplySettings()
 	{
 
-	}*/
-/*
+	}/*
 	void __fastcall Hook_UseMob(oCNpc* npc, void* vtable, oCMobInter* mob)
 	{
 		if (mob && mob->GetScemeName().HasWordI("PAN")) {
@@ -182,7 +182,7 @@ namespace GOTHIC_NAMESPACE
 		return Hook_WinMain(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
 	}
 */
-/*
+
 	void __fastcall oCGame_Init(oCGame* self, void* vtable);
 	auto Hook_oCGame_Init = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x00636F50, 0x0065D480, 0x006646D0, 0x006C1060)), &oCGame_Init, Union::HookType::Hook_Detours);
 	void __fastcall oCGame_Init(oCGame* self, void* vtable)
@@ -190,7 +190,7 @@ namespace GOTHIC_NAMESPACE
 		Hook_oCGame_Init(self, vtable);
 		Game_Init();
 	}
-*/
+
 	/*void __fastcall CGameManager_Done(CGameManager* self, void* vtable);
 	auto Hook_CGameManager_Done = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x00424850, 0x00427310, 0x004251A0, 0x004254E0)), &CGameManager_Done, Union::HookType::Hook_Detours);
 	void __fastcall CGameManager_Done(CGameManager* self, void* vtable)
@@ -310,4 +310,4 @@ namespace GOTHIC_NAMESPACE
 		Hook_CGameManager_ApplySomeSettings(self, vtable);
 		Game_ApplySettings();
 	}*/
-//}
+}
