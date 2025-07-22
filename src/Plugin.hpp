@@ -196,12 +196,12 @@ namespace GOTHIC_NAMESPACE
 			auto mob2 = self->GetObjectName();
 			if (mob2 == zSTRING("OC_MOB_PAN")) {
 				oCItem *rawMeat = npc->inventory2.IsIn("ITMI_RAWMEAT", 0);
-				player->PutInInv("ITFO_MEAT", 1);
+				player->PutInInv("ITFO_MEAT", 100);
 				//auto parser = zCParser::GetInstance();
 				//auto rawMeatIndex = parser->GetIndex("ITMI_RAWMEAT");
 				//auto r = npc->GetFromInv(npc->instanz, rawMeatIndex);
 				auto rr = player->IsInInv("ITMI_RAWMEAT", 0);
-				auto rrr = parser->GetInstance(3849, 0);
+				auto rrr = parser->GetInstance(0, 3849);
 				auto inv = &npc->inventory2; // oCNpcInventory
 				DebugLog("=== INVENTAR ===");
 				//Syrov� maso | ID: 3851 | Count: 103
@@ -230,6 +230,7 @@ namespace GOTHIC_NAMESPACE
 
 				//int rawInstance = rawMeat->GetInstance();
 				DebugLog("Instance " + std::to_string(rrr));
+				player->PutInInv(1, 3849);
 				if (rr) {
 					DebugLog("Instance " + std::to_string(rrr) + ", " + std::to_string(rr->amount) + " syrového masa.");
 				}
