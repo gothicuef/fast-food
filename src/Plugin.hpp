@@ -18,7 +18,7 @@ namespace GOTHIC_NAMESPACE
 
 	void oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void*, int instance, int savegame );
 
-	inline auto Hook_oCNpc_InitByScript = Union::CreateHook((void*)0x0068C840, &oCNpc_InitByScript,
+	inline auto Hook_oCNpc_InitByScript = Union::CreateHook(&Gothic_I_Classic::oCNpc::InitByScript, &oCNpc_InitByScript,
 															HookType::Hook_Detours);
 
 	void oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void* p0, int instance, int savegame ) {
