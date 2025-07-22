@@ -14,15 +14,27 @@
 
 namespace GOTHIC_NAMESPACE
 {
+	#include <Union/Signature.h>
 	using namespace Union;
 
-	void oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void*, int instance, int savegame );
+	void* FindEngineAddress(Signature* baseSign) {
+	#if defined(__G1)
+			auto compSign = Signature::GetCompatibleSignature(baseSign, "Gothic_I_Classic_Names.txt");
+			return compSign ? compSign->GetAddress() : nullptr;
+	#elif defined(__G2A)
+			auto compSign = Signature::GetCompatibleSignature(baseSign, "Gothic_II_Addon_Names.txt");
+			return compSign ? compSign->GetAddress() : nullptr;
+	#else
+			return nullptr;
+	#endif
+	}
 
-	inline auto Hook_oCNpc_InitByScript = Union::CreateHook((void*)0x0068C840, &oCNpc_InitByScript,
-															HookType::Hook_CallPatch);
+	#define ENGINE_ADDRESS_OF(what) FindEngineAddress(SIGNATURE_OF(what))
 
-	void oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void* p0, int instance, int savegame ) {
-		Hook_oCNpc_InitByScript( _this, p0, instance, savegame );
+	inline auto hook = Union::CreateHook(ENGINE_ADDRESS_OF(&Gothic_I_Classic::oCNpc::InitByScript), &Gothic_I_Classic::oCNpc::InitByScript_Hooked);
+
+	void Gothic_I_Classic::oCNpc::InitByScript_Hooked(Gothic_I_Classic::oCNpc* _this, void* p0, int instance, int savegame ) {
+		hook( _this, p0, instance, savegame );
 		_this->name[0] = _this->name[0] + " " + Gothic_I_Classic::zSTRING( instance );
 	}
 
