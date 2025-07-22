@@ -198,8 +198,10 @@ namespace GOTHIC_NAMESPACE
 				oCItem *rawMeat = npc->inventory2.IsIn("ITMI_RAWMEAT", 0);
 				//DebugLog("Máš " + std::to_string(rawMeat->objectName) + " syrového masa.");
 
+				int rawInstance = rawMeat->GetInstance();
+					DebugLog("Instance " + std::to_string(rawInstance) + " syrového masa.");
 				if (rawMeat) {
-					int rawCount = rawMeat->amount;
+					int rawCount = rawMeat->GetValue();
 					DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
 				}
 
