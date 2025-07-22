@@ -17,14 +17,9 @@ namespace Gothic_I_Classic
 {
 	using namespace Union;
 
-	inline void* FindEngineAddress(Signature* baseSign) {
-		auto compSign = Signature::GetCompatibleSignature(baseSign, "Gothic_I_Classic_Names.txt");
-		return compSign ? compSign->GetAddress() : nullptr;
-	}
+	//void InitByScript( int, int )   zCall( 0x0068C840 );
 
-	#define ENGINE_ADDRESS_OF(what) FindEngineAddress(SIGNATURE_OF(what))
-
-	inline auto hook = Union::CreateHook(ENGINE_ADDRESS_OF(&oCNpc::InitByScript), &oCNpc::InitByScript_Hooked);
+	inline auto hook = Union::CreateHook(0x0068C840, &oCNpc::InitByScript_Hooked);
 
 	void oCNpc::InitByScript_Hooked(oCNpc* _this, void* p0, int instance, int savegame ) {
 		hook( _this, p0, instance, savegame );
