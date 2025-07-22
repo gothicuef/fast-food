@@ -3,8 +3,8 @@
 #include "Union/HookProto.h"
 #include "ZenGin/Gothic_I_Classic/API/oNpc.h"
 #include <Union/Hook.h>     // základní hlavičky Union frameworku
-#include <ZenGin/zTypes.h>   // typy jako zSTRING, zCView, atd.
-#include <ZenGin/zView.h>    // konkrétně pro zCView
+#include <ZenGin/Gothic_I_Classic/API/zTypes.h>   // typy jako zSTRING, zCView, atd.
+#include <ZenGin/Gothic_I_Classic/API/zView.h>    // konkrétně pro zCView
 #include <ZenGin/zGothicAPI.h>  // konkrétně pro zSTRING
 
 namespace GOTHIC_NAMESPACE
