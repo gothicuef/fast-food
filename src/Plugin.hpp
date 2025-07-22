@@ -1,12 +1,20 @@
 // This file is included separately for each engine version
 
-namespace GOTHIC_NAMESPACE 
+#include "Union/HookProto.h"
+#include "ZenGin/Gothic_I_Classic/API/oNpc.h"
+#include <Union/Hook.h>     // základní hlavičky Union frameworku
+#include <ZenGin/zTypes.h>   // typy jako zSTRING, zCView, atd.
+#include <ZenGin/zView.h>    // konkrétně pro zCView
+#include <ZenGin/zGothicAPI.h>  // konkrétně pro zSTRING
+
+namespace GOTHIC_NAMESPACE
 {
-	void __fastcall oCNpc_InitByScript( oCNpc* _this, void*, int instance, int savegame );
+	void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void*, int instance, int savegame );
 
-	auto Hook_oCNpc_InitByScript = CreateHookByName( &oCNpc::InitByScript, &oCNpc_InitByScript, Hook_CallPatch );
+	inline auto Hook_oCNpc_InitByScript = Union::CreateHook(&Gothic_I_Classic::oCNpc::InitByScript, &oCNpc_InitByScript,
+	                                                        Union::HookType::Hook_CallPatch);
 
-	void __fastcall oCNpc_InitByScript( oCNpc* _this, void* p0, int instance, int savegame ) {
+	inline void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void* p0, int instance, int savegame ) {
 		Hook_oCNpc_InitByScript( _this, p0, instance, savegame );
 		_this->name[0] = _this->name[0] + " " + zSTRING( instance );
 	}
@@ -20,9 +28,6 @@ namespace GOTHIC_NAMESPACE
 
 	void Game_Init()
 	{
-		//zSTRING msg = "✅ Hello World from Union Plugin!";
-		//Gothic_I_Addon::zCView::DialogMessage(nullptr, &msg, 0);
-		Message::Info("Hello");
 	}
 
 	void Game_Exit()
