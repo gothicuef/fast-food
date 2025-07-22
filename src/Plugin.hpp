@@ -17,7 +17,7 @@ namespace GOTHIC_NAMESPACE
 	#include <Union/Signature.h>
 	using namespace Union;
 
-	void* FindEngineAddress(Signature* baseSign) {
+	inline void* FindEngineAddress(Signature* baseSign) {
 	#if defined(__G1)
 			auto compSign = Signature::GetCompatibleSignature(baseSign, "Gothic_I_Classic_Names.txt");
 			return compSign ? compSign->GetAddress() : nullptr;
