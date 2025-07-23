@@ -200,13 +200,13 @@ namespace GOTHIC_NAMESPACE
 				oCNpcInventory inv = npc->inventory2;
 				//player->PutInInv("ITFO_MEAT", 100);
 
-				if (oCItem *rawMeat = inv.IsIn(3851, 0)) {
-					if (int rawCount = rawMeat->amount; rawCount > 0) {
+				if (const oCItem *rawMeat = inv.IsIn(3851, 0)) {
+					if (const int rawCount = rawMeat->amount; rawCount > 0) {
 						DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
 						DebugLog("Instance " + std::to_string(rawMeat->instanz) + " syrového masa.");
 
-						if (oCItem *cookedMeat = inv.IsIn(3849, 0)) {
-							DebugLog("Instance existuje v inv " + std::to_string(rawMeat->instanz) + " opeceneho masa.");
+						if (const oCItem *cookedMeat = inv.IsIn(3849, 0)) {
+							DebugLog("Instance existuje v inv " + std::to_string(cookedMeat->instanz) + " opeceneho masa.");
 						}
 
 						//inv.Remove(rawMeat->instanz, 0);
