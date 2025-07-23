@@ -39,7 +39,7 @@ namespace GOTHIC_NAMESPACE {
     }
 
     void ShowMenu(const std::vector<std::string>& options, std::function<void(int)> onSelect) {
-        if (gMenu.active) return; // už běží jiné menu
+        if (gMenu.active) return;
 
         gMenu.options = options;
         gMenu.selected = 0;
@@ -71,26 +71,26 @@ namespace GOTHIC_NAMESPACE {
     void HandleMenuInput() {
         if (!gMenu.active) return;
 
-        if (Gothic_I_Classic::zinput->KeyToggled(KEY_UP)) {
+        if (zinput->KeyToggled(KEY_UP)) {
             gMenu.selected--;
             if (gMenu.selected < 0) gMenu.selected = (int)gMenu.options.size() - 1;
             PrintMenu();
         }
 
-        if (Gothic_I_Classic::zinput->KeyToggled(KEY_DOWN)) {
+        if (zinput->KeyToggled(KEY_DOWN)) {
             gMenu.selected++;
             if (gMenu.selected >= (int)gMenu.options.size()) gMenu.selected = 0;
             PrintMenu();
         }
 
-        if (Gothic_I_Classic::zinput->KeyToggled(KEY_RETURN) || Gothic_I_Classic::zinput->KeyToggled(KEY_SPACE)) {
+        if (zinput->KeyToggled(KEY_RETURN) || zinput->KeyToggled(KEY_SPACE)) {
             int choice = gMenu.selected;
             auto callback = gMenu.onSelect;
             CloseMenu();
             if (callback) callback(choice);
         }
 
-        if (Gothic_I_Classic::zinput->KeyToggled(KEY_ESCAPE)) {
+        if (zinput->KeyToggled(KEY_ESCAPE)) {
             CloseMenu();
         }
     }
