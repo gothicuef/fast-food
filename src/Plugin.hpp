@@ -189,6 +189,43 @@ namespace GOTHIC_NAMESPACE
 		Union::HookType::Hook_Detours
 	);
 
+	void AskMeatCount(oCNpc* npc, int totalRaw) {
+		auto dg = new zCViewDialogChoice();
+		dg->RemoveAllChoices();
+
+		zSTRING c1("1x");
+		dg->AddChoice(c1, 0);
+
+		if (totalRaw >= 5) {
+			zSTRING c5("5x");
+			dg->AddChoice(c5, 0);
+		}
+
+		if (totalRaw >= 10) {
+			zSTRING c10("10x");
+			dg->AddChoice(c10, 0);
+		}
+
+		if (totalRaw >= 15) {
+			zSTRING c15("15x");
+			dg->AddChoice(c15, 0);
+		}
+
+		if (totalRaw >= 20) {
+			zSTRING c20("20x");
+			dg->AddChoice(c20, 0);
+		}
+
+		zSTRING cAll("All");
+		dg->AddChoice(cAll, 0);
+
+		zSTRING cancel("Exit");
+		dg->AddChoice(cancel, 0);
+
+		dg->GetScreen().Render();
+		dg->StartSelection();
+	}
+
 	bool IsHeroeCookingOnPan(oCMobInter* object, oCNpc* npc) {
 		if (npc->npcType == NPCTYPE_MAIN) {
 			if (auto mob = object->GetObjectName(); mob == zSTRING("OC_MOB_PAN")) {
@@ -203,6 +240,7 @@ namespace GOTHIC_NAMESPACE
 
 		if (const oCItem *rawMeat = inv->IsIn(3851, 0)) {
 			if (const int rawCount = rawMeat->amount; rawCount > 1) {
+				AskMeatCount(npc, rawCount);
 
 				if (oCItem *cookedMeat = inv->IsIn(3849, 0)) {
 					cookedMeat->amount += rawCount;
