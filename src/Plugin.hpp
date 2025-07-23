@@ -203,16 +203,18 @@ namespace GOTHIC_NAMESPACE
 
 				if (rawMeat) {
 					int rawCount = rawMeat->amount;
-					DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
-					DebugLog("Instance " + std::to_string(rawMeat->instanz) + " syrového masa.");
-					//inv.Remove(rawMeat->instanz, 0);
-					//oCItem* grilledMeat = inv.CreateFromPackString("ITFO_MEAT");
-					//DebugLog("Grilled meat " + std::to_string(grilledMeat->amount) + " syrového masa.");
-					//inv->RemoveByPtr(rawMeat, rawCount);
-					//grilledMeat->amount += rawCount;
-					//DebugLog("2Grilled meat " + std::to_string(grilledMeat->amount) + " syrového masa.");
-					//rawMeat->amount = 0;
-					//DebugLog("2Máš " + std::to_string(rawMeat->amount) + " syrového masa.");
+					if (rawCount > 0) {
+						DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
+						DebugLog("Instance " + std::to_string(rawMeat->instanz) + " syrového masa.");
+						//inv.Remove(rawMeat->instanz, 0);
+						//oCItem* grilledMeat = inv.CreateFromPackString("ITFO_MEAT");
+						//DebugLog("Grilled meat " + std::to_string(grilledMeat->amount) + " syrového masa.");
+						//inv->RemoveByPtr(rawMeat, rawCount);
+						//grilledMeat->amount += rawCount;
+						//DebugLog("2Grilled meat " + std::to_string(grilledMeat->amount) + " syrového masa.");
+						//rawMeat->amount = 0;
+						//DebugLog("2Máš " + std::to_string(rawMeat->amount) + " syrového masa.");
+					}
 				}
 
 			}
