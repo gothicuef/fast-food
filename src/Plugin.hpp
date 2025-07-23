@@ -233,7 +233,7 @@ namespace GOTHIC_NAMESPACE
 
 		if (IsHeroeCookingOnPan(self, npc)) {
 			if (HasRawMeatInInventory(npc)) {
-				AskMeatCount(npc, GetRawMeatAmount(npc));
+				AskMeatCount(self, npc, GetRawMeatAmount(npc));
 			}
 			//CookMeatOnPan(npc);
 		}
