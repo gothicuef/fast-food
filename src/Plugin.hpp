@@ -204,7 +204,7 @@ namespace GOTHIC_NAMESPACE
 						DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
 						DebugLog("Instance " + std::to_string(rawMeat->instanz) + " syrového masa.");
 
-						if (const oCItem *cookedMeat = inv->IsIn(3849, 0)) {
+						if (oCItem *cookedMeat = inv->IsIn(3849, 0)) {
 							DebugLog("Instance existuje v inv " + std::to_string(cookedMeat->instanz) + ", " + std::to_string(cookedMeat->amount) + " opeceneho masa.");
 							cookedMeat->amount += rawCount;
 						} else {
