@@ -193,20 +193,19 @@ namespace GOTHIC_NAMESPACE
 
 		// [MOB] J� 36224 (NpcType: 1) začal interagovat s PAN, OC_MOB_PAN
 		if (npc->npcType == NPCTYPE_MAIN) {
-			auto mob2 = self->GetObjectName();
-			if (mob2 == zSTRING("OC_MOB_PAN")) {
-				//Syrov� maso | ID: 3851 | Count: 103
-				//Ope�en� maso | ID: 3849 | Count: 37
-				oCNpcInventory inv = npc->inventory2;
+			if (auto mob2 = self->GetObjectName(); mob2 == zSTRING("OC_MOB_PAN")) {
+				//Syrove maso | ID: 3851 | Count: 103
+				//Opecene maso | ID: 3849 | Count: 37
+				oCNpcInventory *inv = &npc->inventory2;
 				//player->PutInInv("ITFO_MEAT", 100);
 
-				if (const oCItem *rawMeat = inv.IsIn(3851, 0)) {
+				if (const oCItem *rawMeat = inv->IsIn(3851, 0)) {
 					if (const int rawCount = rawMeat->amount; rawCount > 0) {
 						DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
 						DebugLog("Instance " + std::to_string(rawMeat->instanz) + " syrového masa.");
 
-						if (const oCItem *cookedMeat = inv.IsIn(3849, 0)) {
-							DebugLog("Instance existuje v inv " + std::to_string(cookedMeat->instanz) + " opeceneho masa.");
+						if (const oCItem *cookedMeat = inv->IsIn(3849, 0)) {
+							DebugLog("Instance existuje v inv " + std::to_string(cookedMeat->instanz) + ", " + std::to_string(cookedMeat->amount) + " opeceneho masa.");
 						}
 
 						//inv.Remove(rawMeat->instanz, 0);
@@ -221,12 +220,10 @@ namespace GOTHIC_NAMESPACE
 				}
 
 			}
-			DebugLog("[MOB] NpcType začal interagovat.");
 		}
 
-		DebugLog("[DEBUG] Call original.");
 		// zavoláme původní funkci
-		Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+		return Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
 	}
 
 	// Names
