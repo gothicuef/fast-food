@@ -197,12 +197,17 @@ namespace GOTHIC_NAMESPACE
 			if (mob2 == zSTRING("OC_MOB_PAN")) {
 				//Syrov� maso | ID: 3851 | Count: 103
 				//Ope�en� maso | ID: 3849 | Count: 37
-				oCItem *rawMeat = npc->inventory2.IsIn(3851, 0);
+				oCNpcInventory inv = npc->inventory2;
+				oCItem *rawMeat = inv.IsIn(3851, 0);
 				player->PutInInv("ITFO_MEAT", 100);
 
 				if (rawMeat) {
 					int rawCount = rawMeat->amount;
 					DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
+					oCItem* grilledMeat = inv.CreateFromPackString("ITFO_MEAT");
+					//inv->RemoveByPtr(rawMeat, rawCount);
+					grilledMeat->amount += rawCount;
+					rawMeat->amount = 0;
 				}
 
 			}
