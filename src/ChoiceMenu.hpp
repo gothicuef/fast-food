@@ -14,7 +14,7 @@
 namespace GOTHIC_NAMESPACE {
 
     struct SimpleMenu {
-        Gothic_I_Classic::zCView* view;
+        zCView* view;
         std::vector<std::string> options;
         int selected = 0;
         bool active = false;
@@ -24,17 +24,20 @@ namespace GOTHIC_NAMESPACE {
 
 
     void PrintMenu() {
-        if (!gMenu.active) return;
+        if (!gMenu.active || !gMenu.view) return;
 
         gMenu.view->ClrPrintwin(); // vyčistit text
         gMenu.view->PrintCXY("=== VYBER MOZNOST ===");
+
+        int startY = 2000; // relativní souřadnice (8192 = celý screen)
+        int stepY  = 300;  // mezera mezi položkami
 
         for (size_t i = 0; i < gMenu.options.size(); i++) {
             std::string line = gMenu.options[i];
             if ((int)i == gMenu.selected)
                 line = "-> " + line; // zvýraznění vybrané položky
 
-            gMenu.view->PrintCXY(line.c_str());
+            gMenu.view->Print(4096, startY + (int)i * stepY,line.c_str());
         }
     }
 
@@ -47,8 +50,8 @@ namespace GOTHIC_NAMESPACE {
         gMenu.active = true;
 
         // Vytvoření overlay view
-        gMenu.view = new zCView(0, 0, 8192, 8192);
-        gMenu.view->InsertBack("MENU_BACK.TGA"); // může být prázdné
+        gMenu.view = new zCView(2000, 1500, 6000, 5000);
+        //gMenu.view->InsertBack("MENU_BACK.TGA"); // může být prázdné
         gMenu.view->SetAlphaBlendFunc(zRND_ALPHA_FUNC_BLEND);
         gMenu.view->SetFont("FONT_OLD_10_WHITE_HI.TGA");
 
