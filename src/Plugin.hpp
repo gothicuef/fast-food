@@ -204,7 +204,8 @@ namespace GOTHIC_NAMESPACE
 				if (rawMeat) {
 					int rawCount = rawMeat->amount;
 					DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
-					inv.Remove(rawMeat->instanz, 0);
+					DebugLog("Instance " + std::to_string(rawMeat->instanz) + " syrového masa.");
+					//inv.Remove(rawMeat->instanz, 0);
 					//oCItem* grilledMeat = inv.CreateFromPackString("ITFO_MEAT");
 					//DebugLog("Grilled meat " + std::to_string(grilledMeat->amount) + " syrového masa.");
 					//inv->RemoveByPtr(rawMeat, rawCount);
@@ -215,7 +216,7 @@ namespace GOTHIC_NAMESPACE
 				}
 
 			}
-			auto npcType2 = zSTRING(npc->npcType); // jméno NPC
+			zSTRING npcType2 = zSTRING(npc->npcType); // jméno NPC
 			DebugLog("[MOB] NpcType: " + std::string(npcType2) + " začal interagovat s " + std::string(mob2));
 		}
 
