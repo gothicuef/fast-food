@@ -198,14 +198,17 @@ namespace GOTHIC_NAMESPACE
 				//Syrov� maso | ID: 3851 | Count: 103
 				//Ope�en� maso | ID: 3849 | Count: 37
 				oCNpcInventory inv = npc->inventory2;
-				oCItem *rawMeat = inv.IsIn(3851, 0);
 				//player->PutInInv("ITFO_MEAT", 100);
 
-				if (rawMeat) {
-					int rawCount = rawMeat->amount;
-					if (rawCount > 0) {
+				if (oCItem *rawMeat = inv.IsIn(3851, 0)) {
+					if (int rawCount = rawMeat->amount; rawCount > 0) {
 						DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
 						DebugLog("Instance " + std::to_string(rawMeat->instanz) + " syrového masa.");
+
+						if (oCItem *cookedMeat = inv.IsIn(3849, 0)) {
+							DebugLog("Instance existuje v inv " + std::to_string(rawMeat->instanz) + " opeceneho masa.");
+						}
+
 						//inv.Remove(rawMeat->instanz, 0);
 						//oCItem* grilledMeat = inv.CreateFromPackString("ITFO_MEAT");
 						//DebugLog("Grilled meat " + std::to_string(grilledMeat->amount) + " syrového masa.");
