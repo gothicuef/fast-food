@@ -9,6 +9,7 @@
 #include <ZenGin/Gothic_I_Classic/API/zString.h>  // konkrétně pro zSTRING
 #include <ZenGin/Gothic_I_Classic/API/oNpc.h>
 #include <ZenGin/zGothicAPI.h>  // konkrétně pro zSTRING
+#include <ZenGin/Gothic_I_Classic/API/zAiPlayer.h>
 
 #include "ZenGin/Gothic_I_Classic/API/oGame.h"
 #include <fstream>
@@ -19,20 +20,7 @@ void DebugLog(const std::string& msg) {
 }
 */
 namespace GOTHIC_NAMESPACE
-{/*
-	using namespace Union;
-
-	//void InitByScript( int, int )   zCall( 0x0068C840 );
-
-	void oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void*, int instance, int savegame );
-
-	inline auto hook = CreateHook((void*)0x0068C840, &oCNpc_InitByScript);
-
-	inline void oCNpc_InitByScript(Gothic_I_Classic::oCNpc* _this, void* p0, int instance, int savegame ) {
-		hook( _this, p0, instance, savegame );
-		_this->name[0] = _this->name[0] + " " + Gothic_I_Classic::zSTRING( instance );
-	}*/
-
+{
 	// NOTE! Callbacks won't be called by default, you need to uncomment
 	// hooks that will call specific callback
 
@@ -57,7 +45,7 @@ namespace GOTHIC_NAMESPACE
 
 	inline void Game_Loop()
 	{
-
+		HandleMenuInput();
 	}
 
 	void Game_PostLoop()
@@ -190,49 +178,19 @@ namespace GOTHIC_NAMESPACE
 	);
 
 	void AskMeatCount(oCNpc* npc, int totalRaw) {
-
-		auto wrapper = new zCViewWindow(0, 0, 8192, 8192, VIEW_ITEM);
-		//zCViewObject* obj = zCViewObject::Load("CHOOSE_MEAT.D");
-
-		zCViewDialogChoice* dgChoice = new zCViewDialogChoice();
-		zSTRING title = zSTRING("Fast foood:");
-		dgChoice->Init(dgChoice, 0, 2000, 1500, 4000, 3000, title);
-		dgChoice->RemoveAllChoices();
-
-		zSTRING c1("1x");
-		dgChoice->AddChoice(c1, 0);
-
-		if (totalRaw >= 5) {
-			zSTRING c5("5x");
-			dgChoice->AddChoice(c5, 0);
-		}
-
-		if (totalRaw >= 10) {
-			zSTRING c10("10x");
-			dgChoice->AddChoice(c10, 0);
-		}
-
-		if (totalRaw >= 15) {
-			zSTRING c15("15x");
-			dgChoice->AddChoice(c15, 0);
-		}
-
-		if (totalRaw >= 20) {
-			zSTRING c20("20x");
-			dgChoice->AddChoice(c20, 0);
-		}
-
-		zSTRING cAll("All");
-		dgChoice->AddChoice(cAll, 0);
-
-		zSTRING cancel("Exit");
-		dgChoice->AddChoice(cancel, 0);
-
-
-		wrapper->InsertItem(reinterpret_cast<zCView *>(dgChoice), false);
-
-		screen->InsertItem(wrapper);
-		dgChoice->StartSelection();
+		ShowMenu({
+			"Spát do rána",
+			"Spát do poledne",
+			"Spát do večera",
+			"Nic nedělat"
+		}, [](int choice) {
+			switch (choice) {
+				case 0: screen->PrintCXY("Vybral jsi spánek do rána"); break;
+				case 1: screen->PrintCXY("Vybral jsi spánek do poledne"); break;
+				case 2: screen->PrintCXY("Vybral jsi spánek do večera"); break;
+				default: screen->PrintCXY("Nevybral jsi nic"); break;
+			}
+		});
 	}
 
 	bool IsHeroeCookingOnPan(oCMobInter* object, oCNpc* npc) {
@@ -325,12 +283,12 @@ namespace GOTHIC_NAMESPACE
 	}*/
 
 
-	/*void __fastcall oCGame_MainWorld_Render(Union::Registers& reg);
+	void __fastcall oCGame_MainWorld_Render(Union::Registers& reg);
 	auto Partial_zCWorld_Render = Union::CreatePartialHook(reinterpret_cast<void*>(zSwitch(0x0063DC76, 0x0066498B, 0x0066BA76, 0x006C87EB)), &oCGame_MainWorld_Render);
 	void __fastcall oCGame_MainWorld_Render(Union::Registers& reg)
 	{
 		Game_Loop();
-	}*/
+	}
 
 	/*void __fastcall zCMenu_Render(zCMenu* self, void* vtable);
 	auto Hook_zCMenu_Render = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x004D0DA0, 0x004E14E0, 0x004DB270, 0x004DDC20)), &zCMenu_Render, Union::HookType::Hook_Detours);
