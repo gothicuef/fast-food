@@ -205,9 +205,12 @@ namespace GOTHIC_NAMESPACE
 					int rawCount = rawMeat->amount;
 					DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
 					oCItem* grilledMeat = inv.CreateFromPackString("ITFO_MEAT");
+					DebugLog("Grilled meat " + std::to_string(grilledMeat->amount) + " syrového masa.");
 					//inv->RemoveByPtr(rawMeat, rawCount);
 					grilledMeat->amount += rawCount;
+					DebugLog("2Grilled meat " + std::to_string(grilledMeat->amount) + " syrového masa.");
 					rawMeat->amount = 0;
+					DebugLog("2Máš " + std::to_string(rawMeat->amount) + " syrového masa.");
 				}
 
 			}
