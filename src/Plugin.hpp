@@ -203,13 +203,19 @@ namespace GOTHIC_NAMESPACE
 					if (const int rawCount = rawMeat->amount; rawCount > 0) {
 						DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
 						DebugLog("Instance " + std::to_string(rawMeat->instanz) + " syrového masa.");
+						// Just debug, remove after finish
+						oCItem *cookedMeat = inv->IsIn(3849, 0);
+						if (cookedMeat) {
+							inv->Remove(cookedMeat, cookedMeat->amount);
+						}
+						// end debug
 
-						if (oCItem *cookedMeat = inv->IsIn(3849, 0)) {
+						if (cookedMeat) {
 							DebugLog("Instance existuje v inv " + std::to_string(cookedMeat->instanz) + ", " + std::to_string(cookedMeat->amount) + " opeceneho masa.");
 							cookedMeat->amount += rawCount;
 							inv->Remove(rawMeat->instanz, rawCount);
 						} else {
-
+							DebugLog("Cooked meat Not in inv");
 						}
 
 						//inv.Remove(rawMeat->instanz, 0);
