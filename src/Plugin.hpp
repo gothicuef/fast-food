@@ -195,7 +195,7 @@ namespace GOTHIC_NAMESPACE
 
 		if (IsHeroeCookingOnPan(self, npc)) {
 			if (HasRawMeatInInventory(npc)) {
-				Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+				//Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
 				AskMeatCount(self, npc, GetRawMeatAmount(npc));
 				return;
 			}
