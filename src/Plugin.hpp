@@ -207,6 +207,7 @@ namespace GOTHIC_NAMESPACE
 						if (oCItem *cookedMeat = inv->IsIn(3849, 0)) {
 							DebugLog("Instance existuje v inv " + std::to_string(cookedMeat->instanz) + ", " + std::to_string(cookedMeat->amount) + " opeceneho masa.");
 							cookedMeat->amount += rawCount;
+							inv->Remove(rawMeat->instanz, rawCount);
 						} else {
 
 						}
