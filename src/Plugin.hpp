@@ -208,6 +208,8 @@ namespace GOTHIC_NAMESPACE
 
 						if (cookedMeat) {
 							DebugLog("Instance existuje v inv " + std::to_string(cookedMeat->instanz) + ", " + std::to_string(cookedMeat->amount) + " opeceneho masa.");
+							DebugLog(std::string(cookedMeat->GetName(0)));
+							DebugLog(std::string(cookedMeat->GetInstanceName()));
 							cookedMeat->amount += rawCount;
 							inv->Remove(rawMeat->instanz, rawCount);
 						} else {
