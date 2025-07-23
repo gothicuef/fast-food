@@ -12,12 +12,12 @@
 
 #include "ZenGin/Gothic_I_Classic/API/oGame.h"
 #include <fstream>
-
+/*
 void DebugLog(const std::string& msg) {
 	std::ofstream log("FastFoodDebug.log", std::ios::app);
 	log << msg << "\n";
 }
-
+*/
 namespace GOTHIC_NAMESPACE
 {/*
 	using namespace Union;
@@ -227,9 +227,9 @@ namespace GOTHIC_NAMESPACE
 	}
 
 	// Names
-	void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* self, void* vtable, int instance, int savegame );
+	//void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* self, void* vtable, int instance, int savegame );
 
-	auto Hook_CNpc_InitByScript = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x0068C840, 0x006BCFB0, 0x006D0C10, 0x0072EE70)), &oCNpc_InitByScript, Union::HookType::Hook_Detours);
+	//auto Hook_CNpc_InitByScript = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x0068C840, 0x006BCFB0, 0x006D0C10, 0x0072EE70)), &oCNpc_InitByScript, Union::HookType::Hook_Detours);
 
 	/*
 	 * g1c 0x0068C840
@@ -237,10 +237,10 @@ namespace GOTHIC_NAMESPACE
 	 * g2c 0x006D0C10
 	 * g2a 0x0072EE70
 	 */
-	void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* self, void* vtable, int instance, int savegame ) {
+	/*void __fastcall oCNpc_InitByScript(Gothic_I_Classic::oCNpc* self, void* vtable, int instance, int savegame ) {
 		Hook_CNpc_InitByScript( self, vtable, instance, savegame );
 		self->name[0] = self->name[0] + " " + Gothic_I_Classic::zSTRING( instance );
-	}
+	}*/
 /*
 	void __fastcall oCGame_Init(oCGame* self, void* vtable);
 	auto Hook_oCGame_Init = Union::CreateHook(reinterpret_cast<void*>(zSwitch(0x00636F50, 0x0065D480, 0x006646D0, 0x006C1060)), &oCGame_Init, Union::HookType::Hook_Detours);
