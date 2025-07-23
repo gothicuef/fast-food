@@ -24,6 +24,7 @@ namespace GOTHIC_NAMESPACE
 	// NOTE! Callbacks won't be called by default, you need to uncomment
 	// hooks that will call specific callback
 
+
 	void Game_EntryPoint()
 	{
 
@@ -136,36 +137,10 @@ namespace GOTHIC_NAMESPACE
 	void Game_ApplySettings()
 	{
 
-	}/*
-	void __fastcall Hook_UseMob(oCNpc* npc, void* vtable, oCMobInter* mob)
-	{
-		if (mob && mob->GetScemeName().HasWordI("PAN")) {
-			CookAllMeatNow(npc);
-			return;
-		}
-
-		Orig_UseMob(npc, vtable, mob);
 	}
-
-	void CookAllMeatNow(oCNpc* npc)
-	{
-		int rawCount = npc->inventory2.IsInInv("ITMI_RAWMEAT", 0);
-		if (rawCount > 0) {
-			npc->RemoveFromInventory("ITMI_RAWMEAT", rawCount);
-			npc->CreateInvItems("ITMI_COOKMEAT", rawCount);
-
-			zSTRING msg = "✅ Uvareno vse maso: " + zSTRING(rawCount) + " ks!";
-			Gothic_I_Addon::zCView::MessageBox(nullptr, &msg, 0);
-		} else {
-			zSTRING msg = "❌ Nemas zadne syrove maso.";
-			Gothic_I_Addon::zCView::MessageBox(nullptr, &msg, 0);
-		}
-	}
-*/
 
 	void __fastcall Hook_oCMobInter_StartInteraction(Gothic_I_Classic::oCMobInter* self, void* vtable, Gothic_I_Classic::oCNpc* npc);
 
-	// vytvoření hooku (adresu doplníme podle engine)
 	auto Hook_oCMobInter_StartInteraction_Original = Union::CreateHook(
 		reinterpret_cast<void*>(zSwitch(
 			0x0067FCA0,  // G1
@@ -177,21 +152,6 @@ namespace GOTHIC_NAMESPACE
 		Union::HookType::Hook_Detours
 	);
 
-	void AskMeatCount(oCNpc* npc, int totalRaw) {
-		ShowMenu({
-			"Spát do rána",
-			"Spát do poledne",
-			"Spát do večera",
-			"Nic nedělat"
-		}, [](int choice) {
-			switch (choice) {
-				case 0: screen->PrintCXY("Vybral jsi spánek do rána"); break;
-				case 1: screen->PrintCXY("Vybral jsi spánek do poledne"); break;
-				case 2: screen->PrintCXY("Vybral jsi spánek do večera"); break;
-				default: screen->PrintCXY("Nevybral jsi nic"); break;
-			}
-		});
-	}
 
 	bool IsHeroeCookingOnPan(oCMobInter* object, oCNpc* npc) {
 		if (npc->npcType == NPCTYPE_MAIN) {
@@ -202,33 +162,77 @@ namespace GOTHIC_NAMESPACE
 		return false;
 	}
 
-	void CookMeatOnPan( oCNpc* npc) {
+	int GetRawMeatAmount(oCNpc* npc) {
+		oCNpcInventory *inv = &npc->inventory2;
+		if (const oCItem *rawMeat = inv->IsIn(3851, 0)) {
+			return rawMeat->amount;
+		}
+		return 0;
+	}
+
+	bool HasRawMeatInInventory(oCNpc* npc) {
+		return GetRawMeatAmount(npc) > 0;
+	}
+
+	void CookMeatOnPan( oCNpc* npc, int amount = 1) {
 		oCNpcInventory *inv = &npc->inventory2;
 
-		if (const oCItem *rawMeat = inv->IsIn(3851, 0)) {
-			if (const int rawCount = rawMeat->amount; rawCount > 1) {
-				AskMeatCount(npc, rawCount);
+		int count = GetRawMeatAmount(npc);
+		if (amount > count) {
+			amount = count;
+		}
 
-				if (oCItem *cookedMeat = inv->IsIn(3849, 0)) {
-					cookedMeat->amount += rawCount;
-					inv->Remove(rawMeat->instanz, rawCount);
-				} else {
-					if (int cookedMeatIndex = parser->GetIndex("ITFOMUTTON")) {
-						npc->PutInInv(cookedMeatIndex, rawCount);
-						inv->Remove(rawMeat->instanz, rawCount);
-					}
+		if (HasRawMeatInInventory(npc)) {
+			const oCItem *rawMeat = inv->IsIn(3851, 0);
+
+			if (oCItem *cookedMeat = inv->IsIn(3849, 0)) {
+				cookedMeat->amount += amount;
+				inv->Remove(rawMeat->instanz, amount);
+			} else {
+				if (int cookedMeatIndex = parser->GetIndex("ITFOMUTTON")) {
+					npc->PutInInv(cookedMeatIndex, amount);
+					inv->Remove(rawMeat->instanz, amount);
 				}
-
 			}
 		}
 	}
 
+	void AskMeatCount(oCNpc* npc, int totalRaw) {
+		ShowMenu({
+			"1x",
+			"5x",
+			"10x",
+			"20x",
+			"All",
+			"None"
+		}, [npc, totalRaw](int choice) {
+			switch (choice) {
+				case 0:
+					CookMeatOnPan(npc, 1);
+
+				break;
+				case 1:
+					CookMeatOnPan(npc, 5);
+				break;
+				case 2: CookMeatOnPan(npc, 10); break;
+				case 3: CookMeatOnPan(npc, 20); break;
+				case 4: CookMeatOnPan(npc, totalRaw); break;
+				default: screen->PrintCXY("Nevybral jsi nic"); break;
+			}
+		});
+	}
+
 	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc) {
 		if (IsHeroeCookingOnPan(self, npc)) {
-			CookMeatOnPan(npc);
+			if (HasRawMeatInInventory(npc)) {
+				AskMeatCount(npc, GetRawMeatAmount(npc));
+			}
+			//CookMeatOnPan(npc);
 		}
 
-		return Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+		if (gMenu.active == false) {
+			return Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+		}
 	}
 
 	// Names

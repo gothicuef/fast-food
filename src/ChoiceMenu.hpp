@@ -29,8 +29,8 @@ namespace GOTHIC_NAMESPACE {
         gMenu.view->ClrPrintwin(); // vyčistit text
         gMenu.view->PrintCXY("=== VYBER MOZNOST ===");
 
-        int startY = 2000; // relativní souřadnice (8192 = celý screen)
-        int stepY  = 300;  // mezera mezi položkami
+        int startY = 1000; // relativní souřadnice (8192 = celý screen)
+        int stepY  = 400;  // mezera mezi položkami
 
         for (size_t i = 0; i < gMenu.options.size(); i++) {
             std::string line = gMenu.options[i];
@@ -49,10 +49,17 @@ namespace GOTHIC_NAMESPACE {
         gMenu.onSelect = onSelect;
         gMenu.active = true;
 
+        int left   = 2000;
+        int top    = 1500;
+        int right  = 6192;
+        int bottom = 5000;
+
         // Vytvoření overlay view
-        gMenu.view = new zCView(2000, 1500, 6000, 5000);
+        gMenu.view = new zCView(left, top, right, bottom);
         //gMenu.view->InsertBack("MENU_BACK.TGA"); // může být prázdné
         gMenu.view->SetAlphaBlendFunc(zRND_ALPHA_FUNC_BLEND);
+        gMenu.view->InsertBack("BLACK.TGA"); // nebo malá textura
+        gMenu.view->SetTransparency(200);    // 0=plně průhledné, 255=neprůhledné
         gMenu.view->SetFont("FONT_OLD_10_WHITE_HI.TGA");
 
         // Přidat view do obrazovky
@@ -65,7 +72,7 @@ namespace GOTHIC_NAMESPACE {
     void CloseMenu() {
         if (!gMenu.active) return;
 
-        Gothic_I_Classic::screen->RemoveItem(gMenu.view);
+        screen->RemoveItem(gMenu.view);
         delete gMenu.view;
         gMenu.view = nullptr;
         gMenu.active = false;
