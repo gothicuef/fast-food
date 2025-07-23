@@ -213,16 +213,12 @@ namespace GOTHIC_NAMESPACE
 							cookedMeat->amount += rawCount;
 							inv->Remove(rawMeat->instanz, rawCount);
 						} else {
-							zSTRING nameCookedMeat = zSTRING("ITFOMUTTON");
-							auto cookedMeatN = parser->FindIndex(nameCookedMeat); // oCItem::Ge("ITFOMUTTON");
 							int cookedMeatIndex = parser->GetIndex("ITFOMUTTON");
 							DebugLog("Cooked meat Not in inv");
 
-							if (cookedMeatN) {
-								DebugLog("cookedMeatN created" + std::to_string(cookedMeatN));
-							}
-
 							if (cookedMeatIndex) {
+								npc->PutInInv(cookedMeatIndex, rawCount);
+								inv->Remove(rawMeat->instanz, rawCount);
 								DebugLog("Cooked meat created in inv " + std::to_string(cookedMeatIndex));
 							} else {
 								DebugLog("Cooked meat Not created in inv");
