@@ -213,7 +213,7 @@ namespace GOTHIC_NAMESPACE
 							cookedMeat->amount += rawCount;
 							inv->Remove(rawMeat->instanz, rawCount);
 						} else {
-							cookedMeat = inv->CreateFromPackString("ITFO_MEAT");
+							cookedMeat = inv->CreateFromPackString("ITFOMUTTON");
 							DebugLog("Cooked meat Not in inv");
 
 							if (cookedMeat) {
