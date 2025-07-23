@@ -139,7 +139,7 @@ namespace GOTHIC_NAMESPACE
 
 	}
 
-	void __fastcall Hook_oCMobInter_StartInteraction(Gothic_I_Classic::oCMobInter* self, void* vtable, Gothic_I_Classic::oCNpc* npc);
+	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc);
 
 	auto Hook_oCMobInter_StartInteraction_Original = Union::CreateHook(
 		reinterpret_cast<void*>(zSwitch(
@@ -197,7 +197,7 @@ namespace GOTHIC_NAMESPACE
 		}
 	}
 
-	void AskMeatCount(oCNpc* npc, int totalRaw) {
+	void AskMeatCount(oCMobInter* self, oCNpc* npc, int totalRaw) {
 		ShowMenu({
 			"1x",
 			"5x",
@@ -205,7 +205,8 @@ namespace GOTHIC_NAMESPACE
 			"20x",
 			"All",
 			"None"
-		}, [npc, totalRaw](int choice) {
+		}, [self, npc, totalRaw](int choice) {
+			npc->SetBodyState(BS_STAND);
 			switch (choice) {
 				case 0:
 					CookMeatOnPan(npc, 1);
@@ -217,12 +218,19 @@ namespace GOTHIC_NAMESPACE
 				case 2: CookMeatOnPan(npc, 10); break;
 				case 3: CookMeatOnPan(npc, 20); break;
 				case 4: CookMeatOnPan(npc, totalRaw); break;
-				default: screen->PrintCXY("Nevybral jsi nic"); break;
+				default:
+					self->EndInteraction(npc, 0);
+                    npc->ResetToHumanAI();
+				break;
 			}
 		});
+
+		return;
 	}
 
 	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc) {
+		Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+
 		if (IsHeroeCookingOnPan(self, npc)) {
 			if (HasRawMeatInInventory(npc)) {
 				AskMeatCount(npc, GetRawMeatAmount(npc));
@@ -230,9 +238,6 @@ namespace GOTHIC_NAMESPACE
 			//CookMeatOnPan(npc);
 		}
 
-		if (gMenu.active == false) {
-			return Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
-		}
 	}
 
 	// Names
