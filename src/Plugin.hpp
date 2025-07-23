@@ -90,8 +90,9 @@ namespace GOTHIC_NAMESPACE
 
 	void AskMeatCount(oCMobInter* self, oCNpc* npc, int totalRaw) {
 
-		//oCInformationManager* infoMan = &oCInformationManager::GetInformationManager();
-		gActiveChoice = new zCViewDialogChoice();
+		oCInformationManager* infoMan = &oCInformationManager::GetInformationManager();
+		gActiveChoice = infoMan->DlgChoice;
+		gActiveChoice->RemoveAllChoices();
 		gActivePan = self;
 		gActiveNpc = npc;
 		//infoMan->SetNpc(npc);
