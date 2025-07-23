@@ -206,7 +206,7 @@ namespace GOTHIC_NAMESPACE
 						// Just debug, remove after finish
 						oCItem *cookedMeat = inv->IsIn(3849, 0);
 						if (cookedMeat) {
-							inv->Remove(cookedMeat, cookedMeat->amount);
+							inv->Remove(cookedMeat->instanz, cookedMeat->amount);
 						}
 						// end debug
 
