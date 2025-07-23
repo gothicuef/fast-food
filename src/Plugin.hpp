@@ -222,7 +222,7 @@ namespace GOTHIC_NAMESPACE
 		zSTRING cancel("Exit");
 		dg->AddChoice(cancel, 0);
 
-		dg->GetScreen().Render();
+		//dg->GetScreen().Render();
 		dg->StartSelection();
 	}
 
