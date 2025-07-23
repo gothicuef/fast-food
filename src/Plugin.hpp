@@ -190,40 +190,46 @@ namespace GOTHIC_NAMESPACE
 	);
 
 	void AskMeatCount(oCNpc* npc, int totalRaw) {
-		auto dg = new zCViewDialogChoice();
-		dg->RemoveAllChoices();
+
+		auto wrapper = new zCViewWindow(0, 0, 8192, 8192, VIEW_ITEM);
+
+		auto dgChoice = new zCViewDialogChoice();
+		dgChoice->RemoveAllChoices();
 
 		zSTRING c1("1x");
-		dg->AddChoice(c1, 0);
+		dgChoice->AddChoice(c1, 0);
 
 		if (totalRaw >= 5) {
 			zSTRING c5("5x");
-			dg->AddChoice(c5, 0);
+			dgChoice->AddChoice(c5, 0);
 		}
 
 		if (totalRaw >= 10) {
 			zSTRING c10("10x");
-			dg->AddChoice(c10, 0);
+			dgChoice->AddChoice(c10, 0);
 		}
 
 		if (totalRaw >= 15) {
 			zSTRING c15("15x");
-			dg->AddChoice(c15, 0);
+			dgChoice->AddChoice(c15, 0);
 		}
 
 		if (totalRaw >= 20) {
 			zSTRING c20("20x");
-			dg->AddChoice(c20, 0);
+			dgChoice->AddChoice(c20, 0);
 		}
 
 		zSTRING cAll("All");
-		dg->AddChoice(cAll, 0);
+		dgChoice->AddChoice(cAll, 0);
 
 		zSTRING cancel("Exit");
-		dg->AddChoice(cancel, 0);
+		dgChoice->AddChoice(cancel, 0);
 
-		//dg->GetScreen().Render();
-		dg->StartSelection();
+
+		wrapper->InsertItem(reinterpret_cast<zCView *>(dgChoice), false);
+
+		screen->InsertItem(wrapper);
+		dgChoice->StartSelection();
 	}
 
 	bool IsHeroeCookingOnPan(oCMobInter* object, oCNpc* npc) {
