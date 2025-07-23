@@ -192,8 +192,11 @@ namespace GOTHIC_NAMESPACE
 	void AskMeatCount(oCNpc* npc, int totalRaw) {
 
 		auto wrapper = new zCViewWindow(0, 0, 8192, 8192, VIEW_ITEM);
+		//zCViewObject* obj = zCViewObject::Load("CHOOSE_MEAT.D");
 
-		auto dgChoice = new zCViewDialogChoice();
+		zCViewDialogChoice* dgChoice = new zCViewDialogChoice();
+		zSTRING title = zSTRING("Fast foood:");
+		dgChoice->Init(dgChoice, 0, 2000, 1500, 4000, 3000, title);
 		dgChoice->RemoveAllChoices();
 
 		zSTRING c1("1x");
