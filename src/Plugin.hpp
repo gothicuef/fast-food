@@ -167,23 +167,25 @@ namespace GOTHIC_NAMESPACE
 	}
 
 	void HandleChoicePan() {
-		if (gActiveChoice->ChoiceSelected >= 0) {
-			gActiveChoice->StopSelection();
-			switch (gActiveChoice->ChoiceSelected) {
-				case 1:
-					CookMeatOnPan(gActiveNpc, 1);
+		if (gActiveChoice && gActiveNpc && gActivePan) {
+			if (gActiveChoice->ChoiceSelected >= 0) {
+				gActiveChoice->StopSelection();
+				switch (gActiveChoice->ChoiceSelected) {
+					case 1:
+						CookMeatOnPan(gActiveNpc, 1);
 
-					break;
-				case 2:
-					CookMeatOnPan(gActiveNpc, 5);
-					break;
-				case 3: CookMeatOnPan(gActiveNpc, 10); break;
-				case 4: CookMeatOnPan(gActiveNpc, 20); break;
-				case 5: CookMeatOnPan(gActiveNpc, -1); break;
-				default:
-					gActivePan->EndInteraction(gActiveNpc, 0);
-					gActiveNpc->ResetToHumanAI();
-					break;
+						break;
+					case 2:
+						CookMeatOnPan(gActiveNpc, 5);
+						break;
+					case 3: CookMeatOnPan(gActiveNpc, 10); break;
+					case 4: CookMeatOnPan(gActiveNpc, 20); break;
+					case 5: CookMeatOnPan(gActiveNpc, -1); break;
+					default:
+						gActivePan->EndInteraction(gActiveNpc, 0);
+						gActiveNpc->ResetToHumanAI();
+						break;
+				}
 			}
 		}
 	}
