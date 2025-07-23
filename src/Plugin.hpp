@@ -205,11 +205,11 @@ namespace GOTHIC_NAMESPACE
 			if (const int rawCount = rawMeat->amount; rawCount > 1) {
 
 				if (oCItem *cookedMeat = inv->IsIn(3849, 0)) {
-					cookedMeat->amount += rawCount -1;
+					cookedMeat->amount += rawCount;
 					inv->Remove(rawMeat->instanz, rawCount);
 				} else {
 					if (int cookedMeatIndex = parser->GetIndex("ITFOMUTTON")) {
-						npc->PutInInv(cookedMeatIndex, rawCount - 1);
+						npc->PutInInv(cookedMeatIndex, rawCount);
 						inv->Remove(rawMeat->instanz, rawCount);
 					}
 				}
