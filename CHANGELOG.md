@@ -1,1 +1,2 @@
+- Added Hook for cook every raw meat at once
 - Fixed critical bug in gothic-api dependency (crashes on MP builds caused by improper registries handling)
