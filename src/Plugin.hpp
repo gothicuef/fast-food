@@ -189,54 +189,38 @@ namespace GOTHIC_NAMESPACE
 		Union::HookType::Hook_Detours
 	);
 
-	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc) {
-
-		// [MOB] J� 36224 (NpcType: 1) začal interagovat s PAN, OC_MOB_PAN
+	bool IsHeroeCookingOnPan(oCMobInter* object, oCNpc* npc) {
 		if (npc->npcType == NPCTYPE_MAIN) {
-			if (auto mob = self->GetObjectName(); mob == zSTRING("OC_MOB_PAN")) {
-				//Syrove maso | ID: 3851 | Count: 103
-				//Opecene maso | ID: 3849 | Count: 37
-				oCNpcInventory *inv = &npc->inventory2;
-				//player->PutInInv("ITFO_MEAT", 100);
+			if (auto mob = object->GetObjectName(); mob == zSTRING("OC_MOB_PAN")) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-				if (const oCItem *rawMeat = inv->IsIn(3851, 0)) {
-					if (const int rawCount = rawMeat->amount; rawCount > 0) {
-						DebugLog("Máš " + std::to_string(rawCount) + " syrového masa.");
-						DebugLog("Instance " + std::to_string(rawMeat->instanz) + " syrového masa.");
+	void CookMeatOnPan( oCNpc* npc) {
+		oCNpcInventory *inv = &npc->inventory2;
 
-						oCItem *cookedMeat = inv->IsIn(3849, 0);
+		if (const oCItem *rawMeat = inv->IsIn(3851, 0)) {
+			if (const int rawCount = rawMeat->amount; rawCount > 1) {
 
-						if (cookedMeat) {
-							DebugLog("Instance existuje v inv " + std::to_string(cookedMeat->instanz) + ", " + std::to_string(cookedMeat->amount) + " opeceneho masa.");
-							DebugLog(std::string(cookedMeat->GetName(0)));
-							DebugLog(std::string(cookedMeat->GetInstanceName()));
-							cookedMeat->amount += rawCount;
-							inv->Remove(rawMeat->instanz, rawCount);
-						} else {
-							int cookedMeatIndex = parser->GetIndex("ITFOMUTTON");
-							DebugLog("Cooked meat Not in inv");
-
-							if (cookedMeatIndex) {
-								npc->PutInInv(cookedMeatIndex, rawCount);
-								inv->Remove(rawMeat->instanz, rawCount);
-								DebugLog("Cooked meat created in inv " + std::to_string(cookedMeatIndex));
-							} else {
-								DebugLog("Cooked meat Not created in inv");
-							}
-						}
-
-						//inv.Remove(rawMeat->instanz, 0);
-						//oCItem* grilledMeat = inv.CreateFromPackString("ITFO_MEAT");
-						//DebugLog("Grilled meat " + std::to_string(grilledMeat->amount) + " syrového masa.");
-						//inv->RemoveByPtr(rawMeat, rawCount);
-						//grilledMeat->amount += rawCount;
-						//DebugLog("2Grilled meat " + std::to_string(grilledMeat->amount) + " syrového masa.");
-						//rawMeat->amount = 0;
-						//DebugLog("2Máš " + std::to_string(rawMeat->amount) + " syrového masa.");
+				if (oCItem *cookedMeat = inv->IsIn(3849, 0)) {
+					cookedMeat->amount += rawCount -1;
+					inv->Remove(rawMeat->instanz, rawCount);
+				} else {
+					if (int cookedMeatIndex = parser->GetIndex("ITFOMUTTON")) {
+						npc->PutInInv(cookedMeatIndex, rawCount - 1);
+						inv->Remove(rawMeat->instanz, rawCount);
 					}
 				}
 
 			}
+		}
+	}
+
+	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc) {
+		if (IsHeroeCookingOnPan(self, npc)) {
+			CookMeatOnPan(npc);
 		}
 
 		return Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
