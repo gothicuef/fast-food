@@ -189,11 +189,11 @@ namespace GOTHIC_NAMESPACE
 		Union::HookType::Hook_Detours
 	);
 
-	void __fastcall Hook_oCMobInter_StartInteraction(Gothic_I_Classic::oCMobInter* self, void* vtable, Gothic_I_Classic::oCNpc* npc) {
+	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc) {
 
 		// [MOB] J� 36224 (NpcType: 1) začal interagovat s PAN, OC_MOB_PAN
 		if (npc->npcType == NPCTYPE_MAIN) {
-			if (auto mob2 = self->GetObjectName(); mob2 == zSTRING("OC_MOB_PAN")) {
+			if (auto mob = self->GetObjectName(); mob == zSTRING("OC_MOB_PAN")) {
 				//Syrove maso | ID: 3851 | Count: 103
 				//Opecene maso | ID: 3849 | Count: 37
 				oCNpcInventory *inv = &npc->inventory2;
@@ -206,6 +206,9 @@ namespace GOTHIC_NAMESPACE
 
 						if (const oCItem *cookedMeat = inv->IsIn(3849, 0)) {
 							DebugLog("Instance existuje v inv " + std::to_string(cookedMeat->instanz) + ", " + std::to_string(cookedMeat->amount) + " opeceneho masa.");
+							cookedMeat->amount += rawCount;
+						} else {
+
 						}
 
 						//inv.Remove(rawMeat->instanz, 0);
@@ -222,7 +225,6 @@ namespace GOTHIC_NAMESPACE
 			}
 		}
 
-		// zavoláme původní funkci
 		return Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
 	}
 
