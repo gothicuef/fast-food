@@ -113,30 +113,6 @@ namespace GOTHIC_NAMESPACE
 
 		gActiveChoice->StartSelection();
 
-		auto checkResult = [self, npc, totalRaw]() {
-			if (gActiveChoice->ChoiceSelected >= 0) {
-				gActiveChoice->StopSelection();
-				switch (gActiveChoice->ChoiceSelected) {
-					case 1:
-						CookMeatOnPan(npc, 1);
-
-						break;
-					case 2:
-						CookMeatOnPan(npc, 5);
-						break;
-					case 3: CookMeatOnPan(npc, 10); break;
-					case 4: CookMeatOnPan(npc, 20); break;
-					case 5: CookMeatOnPan(npc, totalRaw); break;
-					default:
-						self->EndInteraction(npc, 0);
-						npc->ResetToHumanAI();
-						break;
-				}
-
-				return true; // hotovo
-			}
-			return false; // ještě čekáme
-		};
 /*
 		ShowMenu({
 			"1x",
