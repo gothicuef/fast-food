@@ -219,11 +219,11 @@ namespace GOTHIC_NAMESPACE
 							DebugLog("Cooked meat Not in inv");
 
 							if (cookedMeatN) {
-								DebugLog("cookedMeatN created" + cookedMeatN);
+								DebugLog("cookedMeatN created" + std::to_string(cookedMeatN));
 							}
 
 							if (cookedMeatIndex) {
-								DebugLog("Cooked meat created in inv " + cookedMeatIndex);
+								DebugLog("Cooked meat created in inv " + std::to_string(cookedMeatIndex));
 							} else {
 								DebugLog("Cooked meat Not created in inv");
 							}
