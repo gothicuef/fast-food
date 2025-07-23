@@ -199,7 +199,7 @@ namespace GOTHIC_NAMESPACE
 				//Ope�en� maso | ID: 3849 | Count: 37
 				oCNpcInventory inv = npc->inventory2;
 				oCItem *rawMeat = inv.IsIn(3851, 0);
-				player->PutInInv("ITFO_MEAT", 100);
+				//player->PutInInv("ITFO_MEAT", 100);
 
 				if (rawMeat) {
 					int rawCount = rawMeat->amount;
@@ -218,10 +218,10 @@ namespace GOTHIC_NAMESPACE
 				}
 
 			}
-			zSTRING npcType2 = zSTRING(npc->npcType); // jméno NPC
-			DebugLog("[MOB] NpcType: " + std::string(npcType2) + " začal interagovat s " + std::string(mob2));
+			DebugLog("[MOB] NpcType začal interagovat.");
 		}
 
+		DebugLog("[DEBUG] Call original.");
 		// zavoláme původní funkci
 		Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
 	}
