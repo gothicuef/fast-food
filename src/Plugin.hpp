@@ -24,6 +24,184 @@ namespace GOTHIC_NAMESPACE
 	// NOTE! Callbacks won't be called by default, you need to uncomment
 	// hooks that will call specific callback
 
+	zCViewDialogChoice* gActiveChoice = nullptr;
+	oCMobInter* gActivePan = nullptr;
+	oCNpc* gActiveNpc = nullptr;
+
+
+	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc);
+
+	auto Hook_oCMobInter_StartInteraction_Original = Union::CreateHook(
+		reinterpret_cast<void*>(zSwitch(
+			0x0067FCA0,  // G1
+			0x006AEDE0,  // G1A
+			0x006C34F0,  // G2
+			0x00721580   // G2A
+		)),
+		&Hook_oCMobInter_StartInteraction,
+		Union::HookType::Hook_Detours
+	);
+
+
+	bool IsHeroeCookingOnPan(oCMobInter* object, oCNpc* npc) {
+		if (npc->npcType == NPCTYPE_MAIN) {
+			if (auto mob = object->GetObjectName(); mob == zSTRING("OC_MOB_PAN")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	int GetRawMeatAmount(oCNpc* npc) {
+		oCNpcInventory *inv = &npc->inventory2;
+		if (const oCItem *rawMeat = inv->IsIn(3851, 0)) {
+			return rawMeat->amount;
+		}
+		return 0;
+	}
+
+	bool HasRawMeatInInventory(oCNpc* npc) {
+		return GetRawMeatAmount(npc) > 0;
+	}
+
+	void CookMeatOnPan( oCNpc* npc, int amount = 1) {
+		oCNpcInventory *inv = &npc->inventory2;
+
+		int count = GetRawMeatAmount(npc);
+
+		if (amount > count || amount < 0) {
+			amount = count;
+		}
+
+		if (HasRawMeatInInventory(npc)) {
+			const oCItem *rawMeat = inv->IsIn(3851, 0);
+
+			if (oCItem *cookedMeat = inv->IsIn(3849, 0)) {
+				cookedMeat->amount += amount;
+				inv->Remove(rawMeat->instanz, amount);
+			} else {
+				if (int cookedMeatIndex = parser->GetIndex("ITFOMUTTON")) {
+					npc->PutInInv(cookedMeatIndex, amount);
+					inv->Remove(rawMeat->instanz, amount);
+				}
+			}
+		}
+	}
+
+	void AskMeatCount(oCMobInter* self, oCNpc* npc, int totalRaw) {
+
+		//oCInformationManager* infoMan = &oCInformationManager::GetInformationManager();
+		gActiveChoice = new zCViewDialogChoice();
+		gActivePan = self;
+		gActiveNpc = npc;
+		//infoMan->SetNpc(npc);
+
+		zSTRING choice1 = "1x";
+		zSTRING choice5 = "5x";
+		zSTRING choice10 = "10x";
+		zSTRING choice20 = "20x";
+		zSTRING choiceX = "All";
+		zSTRING choice0 = "None";
+
+		gActiveChoice->AddChoice(choice1, 1);
+		gActiveChoice->AddChoice(choice5, 2);
+		gActiveChoice->AddChoice(choice10, 3);
+		gActiveChoice->AddChoice(choice20, 4);
+		gActiveChoice->AddChoice(choiceX, 5);
+		gActiveChoice->AddChoice(choice0, 0);
+
+		gActiveChoice->StartSelection();
+
+		auto checkResult = [self, npc, totalRaw]() {
+			if (gActiveChoice->ChoiceSelected >= 0) {
+				gActiveChoice->StopSelection();
+				switch (gActiveChoice->ChoiceSelected) {
+					case 1:
+						CookMeatOnPan(npc, 1);
+
+						break;
+					case 2:
+						CookMeatOnPan(npc, 5);
+						break;
+					case 3: CookMeatOnPan(npc, 10); break;
+					case 4: CookMeatOnPan(npc, 20); break;
+					case 5: CookMeatOnPan(npc, totalRaw); break;
+					default:
+						self->EndInteraction(npc, 0);
+						npc->ResetToHumanAI();
+						break;
+				}
+
+				return true; // hotovo
+			}
+			return false; // ještě čekáme
+		};
+/*
+		ShowMenu({
+			"1x",
+			"5x",
+			"10x",
+			"20x",
+			"All",
+			"None"
+		}, [self, npc, totalRaw](int choice) {
+			npc->SetBodyState(BS_STAND);
+			switch (choice) {
+				case 0:
+					CookMeatOnPan(npc, 1);
+
+				break;
+				case 1:
+					CookMeatOnPan(npc, 5);
+				break;
+				case 2: CookMeatOnPan(npc, 10); break;
+				case 3: CookMeatOnPan(npc, 20); break;
+				case 4: CookMeatOnPan(npc, totalRaw); break;
+				default:
+					self->EndInteraction(npc, 0);
+                    npc->ResetToHumanAI();
+				break;
+			}
+		});*/
+
+	}
+
+	void HandleChoicePan() {
+		if (gActiveChoice->ChoiceSelected >= 0) {
+			gActiveChoice->StopSelection();
+			switch (gActiveChoice->ChoiceSelected) {
+				case 1:
+					CookMeatOnPan(gActiveNpc, 1);
+
+					break;
+				case 2:
+					CookMeatOnPan(gActiveNpc, 5);
+					break;
+				case 3: CookMeatOnPan(gActiveNpc, 10); break;
+				case 4: CookMeatOnPan(gActiveNpc, 20); break;
+				case 5: CookMeatOnPan(gActiveNpc, -1); break;
+				default:
+					gActivePan->EndInteraction(gActiveNpc, 0);
+					gActiveNpc->ResetToHumanAI();
+					break;
+			}
+		}
+	}
+
+	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc) {
+
+		if (IsHeroeCookingOnPan(self, npc)) {
+			if (HasRawMeatInInventory(npc)) {
+				Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+				AskMeatCount(self, npc, GetRawMeatAmount(npc));
+				return;
+			}
+			//CookMeatOnPan(npc);
+		}
+
+		Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+	}
+
 
 	void Game_EntryPoint()
 	{
@@ -46,7 +224,8 @@ namespace GOTHIC_NAMESPACE
 
 	inline void Game_Loop()
 	{
-		HandleMenuInput();
+		//HandleMenuInput();
+		HandleChoicePan();
 	}
 
 	void Game_PostLoop()
@@ -136,107 +315,6 @@ namespace GOTHIC_NAMESPACE
 
 	void Game_ApplySettings()
 	{
-
-	}
-
-	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc);
-
-	auto Hook_oCMobInter_StartInteraction_Original = Union::CreateHook(
-		reinterpret_cast<void*>(zSwitch(
-			0x0067FCA0,  // G1
-			0x006AEDE0,  // G1A
-			0x006C34F0,  // G2
-			0x00721580   // G2A
-		)),
-		&Hook_oCMobInter_StartInteraction,
-		Union::HookType::Hook_Detours
-	);
-
-
-	bool IsHeroeCookingOnPan(oCMobInter* object, oCNpc* npc) {
-		if (npc->npcType == NPCTYPE_MAIN) {
-			if (auto mob = object->GetObjectName(); mob == zSTRING("OC_MOB_PAN")) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	int GetRawMeatAmount(oCNpc* npc) {
-		oCNpcInventory *inv = &npc->inventory2;
-		if (const oCItem *rawMeat = inv->IsIn(3851, 0)) {
-			return rawMeat->amount;
-		}
-		return 0;
-	}
-
-	bool HasRawMeatInInventory(oCNpc* npc) {
-		return GetRawMeatAmount(npc) > 0;
-	}
-
-	void CookMeatOnPan( oCNpc* npc, int amount = 1) {
-		oCNpcInventory *inv = &npc->inventory2;
-
-		int count = GetRawMeatAmount(npc);
-		if (amount > count) {
-			amount = count;
-		}
-
-		if (HasRawMeatInInventory(npc)) {
-			const oCItem *rawMeat = inv->IsIn(3851, 0);
-
-			if (oCItem *cookedMeat = inv->IsIn(3849, 0)) {
-				cookedMeat->amount += amount;
-				inv->Remove(rawMeat->instanz, amount);
-			} else {
-				if (int cookedMeatIndex = parser->GetIndex("ITFOMUTTON")) {
-					npc->PutInInv(cookedMeatIndex, amount);
-					inv->Remove(rawMeat->instanz, amount);
-				}
-			}
-		}
-	}
-
-	void AskMeatCount(oCMobInter* self, oCNpc* npc, int totalRaw) {
-		ShowMenu({
-			"1x",
-			"5x",
-			"10x",
-			"20x",
-			"All",
-			"None"
-		}, [self, npc, totalRaw](int choice) {
-			npc->SetBodyState(BS_STAND);
-			switch (choice) {
-				case 0:
-					CookMeatOnPan(npc, 1);
-
-				break;
-				case 1:
-					CookMeatOnPan(npc, 5);
-				break;
-				case 2: CookMeatOnPan(npc, 10); break;
-				case 3: CookMeatOnPan(npc, 20); break;
-				case 4: CookMeatOnPan(npc, totalRaw); break;
-				default:
-					self->EndInteraction(npc, 0);
-                    npc->ResetToHumanAI();
-				break;
-			}
-		});
-
-		return;
-	}
-
-	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc) {
-		Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
-
-		if (IsHeroeCookingOnPan(self, npc)) {
-			if (HasRawMeatInInventory(npc)) {
-				AskMeatCount(self, npc, GetRawMeatAmount(npc));
-			}
-			//CookMeatOnPan(npc);
-		}
 
 	}
 
