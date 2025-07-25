@@ -1,6 +1,6 @@
 [submodule "dependencies/union/union-api"]
 	path = dependencies/union/union-api
-	url = https://gitlab.com/union-framework/union-api.git
+	url = https://github.com/gothicuef/union-api.git
 [submodule "dependencies/union/gothic-api"]
 	path = dependencies/union/gothic-api
-	url = https://gitlab.com/union-framework/gothic-api.git
+	url = https://github.com/gothicuef/gothic-api.git
