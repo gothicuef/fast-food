@@ -13,12 +13,12 @@
 
 #include "ZenGin/Gothic_I_Classic/API/oGame.h"
 #include <fstream>
-/*
+
 void DebugLog(const std::string& msg) {
 	std::ofstream log("FastFoodDebug.log", std::ios::app);
 	log << msg << "\n";
 }
-*/
+
 namespace GOTHIC_NAMESPACE
 {
 	// NOTE! Callbacks won't be called by default, you need to uncomment
@@ -159,6 +159,7 @@ namespace GOTHIC_NAMESPACE
 
 	void HandleChoicePan() {
 		if (gActiveChoice && gActiveNpc && gActivePan) {
+			DebugLog("Handling ChoicePan, ChoiceSelected: " + std::to_string(gActiveChoice->ChoiceSelected));
 			if (gActiveChoice->ChoiceSelected >= 0) {
 				gActiveChoice->StopSelection();
 				switch (gActiveChoice->ChoiceSelected) {
@@ -198,6 +199,7 @@ namespace GOTHIC_NAMESPACE
 
 		if (IsHeroeCookingOnPan(self, npc)) {
 			if (HasRawMeatInInventory(npc)) {
+				Hook_oCMobInter_StopInteraction_Original(self, vtable, npc);
 				//Hook_oCMobInter_StopInteraction_Original(self, vtable, npc);
 				AskMeatCount(self, npc, GetRawMeatAmount(npc));
 			}
