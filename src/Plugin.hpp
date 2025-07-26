@@ -102,6 +102,7 @@ namespace GOTHIC_NAMESPACE
 	void AskMeatCount(oCMobInter* self, oCNpc* npc, int totalRaw) {
 
 		oCInformationManager* infoMan = &oCInformationManager::GetInformationManager();
+		infoMan->SetNpc(npc);
 		gActiveChoice = infoMan->DlgChoice;
 		gActiveChoice->RemoveAllChoices();
 		gActivePan = self;
@@ -115,15 +116,16 @@ namespace GOTHIC_NAMESPACE
 		zSTRING choiceX = "All";
 		zSTRING choice0 = "None";
 
+		gActiveChoice->AddChoice(choice0, 0);
 		gActiveChoice->AddChoice(choice1, 1);
 		gActiveChoice->AddChoice(choice5, 2);
 		gActiveChoice->AddChoice(choice10, 3);
 		gActiveChoice->AddChoice(choice20, 4);
 		gActiveChoice->AddChoice(choiceX, 5);
-		gActiveChoice->AddChoice(choice0, 0);
-		gActiveChoice->Activate(1);
 
 		gActiveChoice->StartSelection();
+		gActiveChoice->Activate(1);
+		gActiveChoice->Render();
 
 /*
 		ShowMenu({
@@ -196,13 +198,13 @@ namespace GOTHIC_NAMESPACE
 
 		if (IsHeroeCookingOnPan(self, npc)) {
 			if (HasRawMeatInInventory(npc)) {
-				//Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+				//Hook_oCMobInter_StopInteraction_Original(self, vtable, npc);
 				AskMeatCount(self, npc, GetRawMeatAmount(npc));
 			}
 			//CookMeatOnPan(npc);
 		}
 
-		//Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+		//Hook_oCMobInter_StopInteraction_Original(self, vtable, npc);
 	}
 
 
