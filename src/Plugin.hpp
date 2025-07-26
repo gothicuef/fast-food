@@ -110,6 +110,7 @@ namespace GOTHIC_NAMESPACE
 		gActiveChoice->AddChoice(choice20, 4);
 		gActiveChoice->AddChoice(choiceX, 5);
 		gActiveChoice->AddChoice(choice0, 0);
+		gActiveChoice->Activate(1);
 
 		gActiveChoice->StartSelection();
 
