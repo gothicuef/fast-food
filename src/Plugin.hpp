@@ -178,7 +178,7 @@ namespace GOTHIC_NAMESPACE
 			//CookMeatOnPan(npc);
 		}
 
-		Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+		//Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
 	}
 
 
