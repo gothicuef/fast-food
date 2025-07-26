@@ -125,7 +125,7 @@ namespace GOTHIC_NAMESPACE
 
 		gActiveChoice->StartSelection();
 		gActiveChoice->Activate(1);
-		gActiveChoice->Render();
+		//gActiveChoice->Render();
 
 /*
 		ShowMenu({
