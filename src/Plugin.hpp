@@ -28,9 +28,9 @@ namespace GOTHIC_NAMESPACE
 	oCMobInter* gActivePan = nullptr;
 	oCNpc* gActiveNpc = nullptr;
 
-	//void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc);
-	void __fastcall Hook_oCMobInter_StopInteraction(oCMobInter* self, void* vtable, oCNpc* npc);
-/*
+	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc);
+	//void __fastcall Hook_oCMobInter_StopInteraction(oCMobInter* self, void* vtable, oCNpc* npc);
+
 	auto Hook_oCMobInter_StartInteraction_Original = Union::CreateHook(
 		reinterpret_cast<void*>(zSwitch(
 			0x0067FCA0,  // G1
@@ -41,8 +41,8 @@ namespace GOTHIC_NAMESPACE
 		&Hook_oCMobInter_StartInteraction,
 		Union::HookType::Hook_Detours
 		);
-*/
-	auto Hook_oCMobInter_StopInteraction_Original = Union::CreateHook(
+
+	/*auto Hook_oCMobInter_StopInteraction_Original = Union::CreateHook(
 		reinterpret_cast<void*>(zSwitch(
 			0x00680250,  // G1
 			0x006AF4B0,  // G1A
@@ -51,7 +51,7 @@ namespace GOTHIC_NAMESPACE
 		)),
 		&Hook_oCMobInter_StopInteraction,
 		Union::HookType::Hook_Detours
-	);
+	);*/
 
 
 	bool IsHeroeCookingOnPan(oCMobInter* object, oCNpc* npc) {
@@ -194,7 +194,7 @@ namespace GOTHIC_NAMESPACE
 			}
 		}
 	}
-/*
+
 	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc) {
 
 		if (IsHeroeCookingOnPan(self, npc)) {
@@ -206,9 +206,9 @@ namespace GOTHIC_NAMESPACE
 		}
 
 		//Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
-	}*/
+	}
 
-	void __fastcall Hook_oCMobInter_StopInteraction(oCMobInter* self, void* vtable, oCNpc* npc) {
+	/*void __fastcall Hook_oCMobInter_StopInteraction(oCMobInter* self, void* vtable, oCNpc* npc) {
 
 		if (IsHeroeCookingOnPan(self, npc)) {
 			if (HasRawMeatInInventory(npc)) {
@@ -220,7 +220,7 @@ namespace GOTHIC_NAMESPACE
 		}
 
 		Hook_oCMobInter_StopInteraction_Original(self, vtable, npc);
-	}
+	}*/
 
 
 	void Game_EntryPoint()
