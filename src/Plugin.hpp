@@ -124,7 +124,7 @@ namespace GOTHIC_NAMESPACE
 		gActiveChoice->AddChoice(choiceX, 5);
 
 		gActiveChoice->StartSelection();
-		gActiveChoice->Activate(1);
+		//gActiveChoice->Activate(1);
 		//gActiveChoice->Render();
 
 /*
@@ -167,29 +167,33 @@ namespace GOTHIC_NAMESPACE
 		if (gActiveChoice && gActiveNpc && gActivePan) {
 			DebugLog("Handling ChoicePan, ChoiceSelected: " + std::to_string(gActiveChoice->ChoiceSelected) + " selectedText: " + std::string(gActiveChoice->GetSelectedText()));
 			if (gActiveChoice->ChoiceSelected > 0) {
+
 				DebugLog("Handled ChoicePan, ChoiceSelected: " + std::to_string(gActiveChoice->ChoiceSelected) + " selectedText: " + std::string(gActiveChoice->GetSelectedText()));
-				gActiveChoice->StopSelection();
-				switch (gActiveChoice->ChoiceSelected) {
-					case 1:
-						CookMeatOnPan(gActiveNpc, 1);
-						ChoicePanReset();
-						break;
-					case 2:
-						CookMeatOnPan(gActiveNpc, 5);
-						ChoicePanReset();
-						break;
-					case 3: CookMeatOnPan(gActiveNpc, 10);
-						ChoicePanReset(); break;
-					case 4: CookMeatOnPan(gActiveNpc, 20);
-						ChoicePanReset(); break;
-					case 5: CookMeatOnPan(gActiveNpc, -1);
-						ChoicePanReset(); break;
-					case 0:
-						gActivePan->EndInteraction(gActiveNpc, 0);
-						gActiveNpc->ResetToHumanAI();
-						ChoicePanReset();
-						break;
-					default: ;
+				if (gActiveChoice->IsDone == 1) {
+					DebugLog("Is Done ChoicePan, ChoiceSelected: " + std::to_string(gActiveChoice->ChoiceSelected) + " selectedText: " + std::string(gActiveChoice->GetSelectedText()));
+					gActiveChoice->StopSelection();
+					switch (gActiveChoice->ChoiceSelected) {
+						case 1:
+							CookMeatOnPan(gActiveNpc, 1);
+							ChoicePanReset();
+							break;
+						case 2:
+							CookMeatOnPan(gActiveNpc, 5);
+							ChoicePanReset();
+							break;
+						case 3: CookMeatOnPan(gActiveNpc, 10);
+							ChoicePanReset(); break;
+						case 4: CookMeatOnPan(gActiveNpc, 20);
+							ChoicePanReset(); break;
+						case 5: CookMeatOnPan(gActiveNpc, -1);
+							ChoicePanReset(); break;
+						case 0:
+							gActivePan->EndInteraction(gActiveNpc, 0);
+							gActiveNpc->ResetToHumanAI();
+							ChoicePanReset();
+							break;
+						default: ;
+					}
 				}
 			}
 		}
