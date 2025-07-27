@@ -158,7 +158,7 @@ namespace GOTHIC_NAMESPACE
 	}
 
 	void ChoicePanReset() {
-
+		gActiveChoice->StopSelection();
 		gActivePan->EndInteraction(gActiveNpc, 0);
 		gActiveNpc->ResetToHumanAI();
 		gActiveChoice->RemoveAllChoices();
@@ -169,13 +169,8 @@ namespace GOTHIC_NAMESPACE
 
 	void HandleChoicePan() {
 		if (gActiveChoice && gActiveNpc && gActivePan) {
-			DebugLog("Handling ChoicePan, ChoiceSelected: " + std::to_string(gActiveChoice->ChoiceSelected) + " selectedText: " + std::string(gActiveChoice->GetSelectedText()));
-			if (gActiveChoice->ChoiceSelected > 0) {
-
-				DebugLog("Handled ChoicePan, ChoiceSelected: " + std::to_string(gActiveChoice->ChoiceSelected) + " selectedText: " + std::string(gActiveChoice->GetSelectedText()));
 				if (gActiveChoice->IsDone == 1) {
 					DebugLog("Is Done ChoicePan, ChoiceSelected: " + std::to_string(gActiveChoice->ChoiceSelected) + " selectedText: " + std::string(gActiveChoice->GetSelectedText()));
-					gActiveChoice->StopSelection();
 					switch (gActiveChoice->ChoiceSelected) {
 						case 1:
 							CookMeatOnPan(gActiveNpc, 1);
@@ -200,7 +195,6 @@ namespace GOTHIC_NAMESPACE
 						default: ;
 					}
 				}
-			}
 		}
 	}
 
