@@ -103,7 +103,7 @@ namespace GOTHIC_NAMESPACE
 	void AskMeatCount(oCMobInter* self, oCNpc* npc, int totalRaw) {
 
 		oCInformationManager* infoMan = &oCInformationManager::GetInformationManager();
-		infoMan->SetNpc(npc);
+		//infoMan->SetNpc(npc);
 		gActiveChoice = infoMan->DlgChoice;
 		gActiveChoice->RemoveAllChoices();
 		gActivePan = self;
@@ -180,7 +180,7 @@ namespace GOTHIC_NAMESPACE
 			//CookMeatOnPan(npc);
 		}
 
-		//Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
+		Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
 	}
 
 	/*void __fastcall Hook_oCMobInter_StopInteraction(oCMobInter* self, void* vtable, oCNpc* npc) {
