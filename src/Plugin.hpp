@@ -158,6 +158,10 @@ namespace GOTHIC_NAMESPACE
 	}
 
 	void ChoicePanReset() {
+
+		gActivePan->EndInteraction(gActiveNpc, 0);
+		gActiveNpc->ResetToHumanAI();
+		gActiveChoice->RemoveAllChoices();
 		gActiveChoice = nullptr;
 		gActiveNpc = nullptr;
 		gActivePan = nullptr;
@@ -182,14 +186,15 @@ namespace GOTHIC_NAMESPACE
 							ChoicePanReset();
 							break;
 						case 3: CookMeatOnPan(gActiveNpc, 10);
-							ChoicePanReset(); break;
+							ChoicePanReset();
+							break;
 						case 4: CookMeatOnPan(gActiveNpc, 20);
-							ChoicePanReset(); break;
+							ChoicePanReset();
+							break;
 						case 5: CookMeatOnPan(gActiveNpc, -1);
-							ChoicePanReset(); break;
+							ChoicePanReset();
+							break;
 						case 0:
-							gActivePan->EndInteraction(gActiveNpc, 0);
-							gActiveNpc->ResetToHumanAI();
 							ChoicePanReset();
 							break;
 						default: ;
