@@ -27,6 +27,7 @@ namespace GOTHIC_NAMESPACE
 	zCViewDialogChoice* gActiveChoice = nullptr;
 	oCMobInter* gActivePan = nullptr;
 	oCNpc* gActiveNpc = nullptr;
+	auto selectedCallback = nullptr;
 
 	void __fastcall Hook_oCMobInter_StartInteraction(oCMobInter* self, void* vtable, oCNpc* npc);
 	//void __fastcall Hook_oCMobInter_StopInteraction(oCMobInter* self, void* vtable, oCNpc* npc);
@@ -124,37 +125,6 @@ namespace GOTHIC_NAMESPACE
 		gActiveChoice->AddChoice(choiceX, 5);
 
 		gActiveChoice->StartSelection();
-		//gActiveChoice->Activate(1);
-		//gActiveChoice->Render();
-
-/*
-		ShowMenu({
-			"1x",
-			"5x",
-			"10x",
-			"20x",
-			"All",
-			"None"
-		}, [self, npc, totalRaw](int choice) {
-			npc->SetBodyState(BS_STAND);
-			switch (choice) {
-				case 0:
-					CookMeatOnPan(npc, 1);
-
-				break;
-				case 1:
-					CookMeatOnPan(npc, 5);
-				break;
-				case 2: CookMeatOnPan(npc, 10); break;
-				case 3: CookMeatOnPan(npc, 20); break;
-				case 4: CookMeatOnPan(npc, totalRaw); break;
-				default:
-					self->EndInteraction(npc, 0);
-                    npc->ResetToHumanAI();
-				break;
-			}
-		});*/
-
 	}
 
 	void ChoicePanReset() {
@@ -162,6 +132,7 @@ namespace GOTHIC_NAMESPACE
 		gActivePan->EndInteraction(gActiveNpc, 0);
 		gActiveNpc->ResetToHumanAI();
 		gActiveChoice->RemoveAllChoices();
+		gActiveChoice->Close();
 		gActiveChoice = nullptr;
 		gActiveNpc = nullptr;
 		gActivePan = nullptr;
@@ -202,6 +173,7 @@ namespace GOTHIC_NAMESPACE
 
 		if (IsHeroeCookingOnPan(self, npc)) {
 			if (HasRawMeatInInventory(npc)) {
+				auto selectedCallback = Hook_oCMobInter_StartInteraction_Original;
 				//Hook_oCMobInter_StartInteraction_Original(self, vtable, npc);
 				AskMeatCount(self, npc, GetRawMeatAmount(npc));
 			}
