@@ -1,0 +1,2 @@
+GothicSteamWorkshopUploader.exe publish --game=g1 --title="Example mod" --tags="Addon,Visual,Fun" --content="%cd%\\Content" --preview="%cd%\\preview.jpg"
+pause

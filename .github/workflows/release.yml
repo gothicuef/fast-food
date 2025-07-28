@@ -53,3 +53,8 @@ jobs:
           tag_name: ${{ env.release_tag }}
           body_path: changelog.md
           files: ${{ env.plugin_dll }}
+
+      - name: Upload plugin to the Steam workshop
+        run: |
+          cp $plugin_dll ./steam-workshop/system/autorun
+          ./steam-workshop/publish.bat
