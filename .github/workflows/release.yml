@@ -57,4 +57,4 @@ jobs:
         run: |
           cp ${{ env.plugin_dll }} ./steam-workshop/Content/system/autorun
           cd ./steam-workshop
-          ./steam-workshop/publish.bat
+          ./publish.bat
