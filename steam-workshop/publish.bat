@@ -1,1 +1,4 @@
-GothicSteamWorkshopUploader.exe publish --game=g1 --title="Example mod" --tags="Addon,Visual,Fun" --content="%cd%\\Content" --preview="%cd%\\preview.jpg"
+@echo off
+setlocal
+set HERE=%~dp0
+"%HERE%GothicSteamWorkshopUploader.exe" publish --game=g1 --title="Example mod" --tags="Addon,Visual,Fun" --content="%cd%\\Content" --preview="%cd%\\preview.jpg"
