@@ -54,7 +54,7 @@ jobs:
           body_path: changelog.md
           files: ${{ env.plugin_dll }}
       - name: Upload plugin to the Steam workshop
+        working-directory: ./steam-workshop
         run: |
-          cp ${{ env.plugin_dll }} ./steam-workshop/Content/system/autorun
-          cd ./steam-workshop
+          cp ${{ env.plugin_dll }} ./Content/system/autorun
           ./publish.bat
