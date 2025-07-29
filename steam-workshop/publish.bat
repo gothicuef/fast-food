@@ -1,4 +1,4 @@
 @echo off
 setlocal
-set HERE=%~dp0
-"%HERE%GothicSteamWorkshopUploader.exe" publish --game=g1 --title="Example mod" --tags="Addon,Visual,Fun" --content="%cd%\\Content" --preview="%cd%\\preview.jpg"
+set "HERE=%~dp0"
+call "%HERE%GothicSteamWorkshopUploader.exe" publish --game=g1 --title="Example mod" --tags="Addon,Visual,Fun" --content="%HERE%\\Content" --preview="%HERE%\\preview.jpg"
