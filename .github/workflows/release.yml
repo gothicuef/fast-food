@@ -56,4 +56,5 @@ jobs:
       - name: Upload plugin to the Steam workshop
         run: |
           cp ${{ env.plugin_dll }} ./steam-workshop/Content/system/autorun
+          cd ./steam-workshop
           ./steam-workshop/publish.bat
