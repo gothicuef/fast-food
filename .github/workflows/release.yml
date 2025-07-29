@@ -60,7 +60,7 @@ jobs:
 #          ./publish.bat
       - name: v2 Upload plugin to the Steam workshop
         run: |
-          cp ${{ env.plugin_dll }} ./steam-workshop/Content/system/autorun
+          cp ${{ env.plugin_dll }} steam-workshop\Content\system\autorun
           steam-workshop/GothicSteamWorkshopUploader.exe publish ^
             --game=g1 ^
             --title="Example mod" ^
